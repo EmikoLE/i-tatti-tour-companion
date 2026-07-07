@@ -1,0 +1,1138 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #050807;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #050807;
+}
+
+/* STORY */
+
+#storyStage {
+  position: absolute;
+  inset: 0;
+  transition: opacity 300ms ease;
+}
+
+body.preparingSlide #storyStage {
+  opacity: 0;
+}
+
+.storySlide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 950ms ease;
+}
+
+.storySlide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.backdrop {
+  position: absolute;
+  inset: -44px;
+  background-image: var(--image);
+  background-size: cover;
+  background-position: center;
+  filter: blur(36px) brightness(0.52) saturate(0.82);
+  transform: scale(1.1);
+}
+
+.storySlide.active .backdrop {
+  animation: backdropDrift 14s ease-in-out infinite alternate;
+}
+
+.backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(247,244,239,0.18), transparent 42%),
+    linear-gradient(to bottom, rgba(0,0,0,0.18), rgba(0,0,0,0.55));
+}
+
+.imageStage {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storySlide.landscape .imageStage {
+  inset: 135px 54px 96px;
+}
+
+.storySlide.portrait .imageStage {
+  inset: 135px 54px 96px;
+}
+
+.storySlide.portrait .imageStage img {
+  max-width: 94vw;
+  max-height: 78vh;
+  transform: rotate(90deg);
+}
+
+.storySlide.portrait .imageStage img {
+  max-width: 82vh;
+  max-height: 84vw;
+  transform: rotate(-90deg);
+  transform-origin: center center;
+}
+
+.imageStage img {
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  box-shadow:
+    0 36px 90px rgba(0,0,0,0.52),
+    0 0 0 1px rgba(255,255,255,0.13);
+  filter: sepia(10%) contrast(96%) saturate(90%);
+  opacity: 0;
+}
+
+.storySlide.landscape.active .imageStage img {
+  animation: landscapeReveal 1050ms cubic-bezier(.19,.83,.25,1) forwards;
+}
+
+.storySlide.portrait.active .imageStage img {
+  animation: portraitRotatedReveal 1050ms cubic-bezier(.19,.83,.25,1) forwards;
+}
+
+.storySlide.justArrived .imageStage img {
+  animation:
+    imageSettle 900ms cubic-bezier(.19,.83,.25,1) forwards,
+    softPulse 900ms ease forwards 900ms;
+}
+
+/* COMPARISON SLIDE */
+
+.comparisonStage {
+  position: relative;
+  width: min(88vh, 70vw);
+  height: min(92vh, 76vw);
+  transform: rotate(90deg);
+  transform-origin: center center;
+  opacity: 0;
+  box-shadow:
+    0 36px 90px rgba(0,0,0,0.52),
+    0 0 0 1px rgba(255,255,255,0.13);
+  overflow: hidden;
+  background: #111;
+  touch-action: none;
+  cursor: ew-resize;
+}
+
+.storySlide.active .comparisonStage {
+  animation: comparisonReveal 1050ms cubic-bezier(.19,.83,.25,1) forwards;
+}
+
+.comparisonImage {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: sepia(10%) contrast(96%) saturate(90%);
+  user-select: none;
+  pointer-events: none;
+}
+
+.comparisonImage.base {
+  z-index: 1;
+}
+
+.comparisonImage.reveal {
+  z-index: 2;
+  clip-path: inset(0 calc(100% - var(--split, 75%)) 0 0);
+}
+
+.comparisonDivider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--split, 75%);
+  z-index: 4;
+  width: 3px;
+  background: rgba(247,244,239,0.9);
+  transform: translateX(-50%);
+  box-shadow: 0 0 18px rgba(247,244,239,0.42);
+  pointer-events: none;
+}
+
+.comparisonHandle {
+  position: absolute;
+  top: 50%;
+  left: var(--split, 75%);
+  z-index: 5;
+  width: 54px;
+  height: 54px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(247,244,239,0.82);
+  background: rgba(5,8,7,0.48);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 16px 38px rgba(0,0,0,0.36);
+  pointer-events: none;
+}
+
+.comparisonHandle::before,
+.comparisonHandle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-top: 1px solid rgba(247,244,239,0.9);
+  border-left: 1px solid rgba(247,244,239,0.9);
+}
+
+.comparisonHandle::before {
+  left: 15px;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.comparisonHandle::after {
+  right: 15px;
+  transform: translateY(-50%) rotate(135deg);
+}
+
+/* INTRO */
+
+#introTransition {
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 0;
+}
+
+#introTransition.visible {
+  display: flex;
+  animation: introFadeOut 2900ms ease forwards;
+}
+
+.introPhoto {
+  position: absolute;
+  inset: -44px;
+  width: calc(100% + 88px);
+  height: calc(100% + 88px);
+  object-fit: cover;
+  filter: blur(32px) brightness(0.42) saturate(0.82);
+  transform: scale(1.1);
+}
+
+.introVeil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(247,244,239,0.22), transparent 42%),
+    rgba(5,8,7,0.46);
+}
+
+#introContent {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  color: white;
+  opacity: 0;
+}
+
+#introTransition.visible #introContent {
+  animation: introContentFade 2400ms ease forwards;
+}
+
+#introLogo {
+  width: 230px;
+  filter: brightness(0) invert(1);
+  margin-bottom: 28px;
+}
+
+#introContent h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: normal;
+  letter-spacing: 0.01em;
+  text-shadow: 0 4px 28px rgba(0,0,0,0.7);
+}
+
+/* BOOK OPEN */
+
+#bookOpenTransition {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5,8,7,0.88);
+  backdrop-filter: blur(22px);
+  overflow: hidden;
+  opacity: 0;
+}
+
+#bookOpenTransition.visible {
+  display: flex;
+  animation: bookOverlayIn 500ms ease forwards;
+}
+
+#bookOpenBackdrop {
+  position: absolute;
+  inset: -44px;
+  background-image: var(--book-image, url("assets/bernard and mary.jpg"));
+  background-size: cover;
+  background-position: center;
+  filter: blur(38px) brightness(0.42) saturate(0.82);
+  transform: scale(1.1);
+  opacity: 0;
+}
+
+#bookOpenTransition.visible #bookOpenBackdrop {
+  animation: bookBackdropIn 1500ms ease forwards;
+}
+
+#bookOpenCard {
+  position: relative;
+  z-index: 3;
+  width: 230px;
+  height: 365px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.13), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow:
+    0 28px 75px rgba(0,0,0,0.42),
+    inset 0 0 0 1px rgba(255,255,255,0.04);
+  overflow: hidden;
+  transform-origin: center;
+}
+
+#bookOpenTransition.visible #bookOpenCard {
+  animation: bookOpenCard 1850ms cubic-bezier(.19,.83,.25,1) forwards;
+}
+
+#bookOpenCard img {
+  width: 100%;
+  height: 76%;
+  object-fit: cover;
+  display: block;
+  filter: sepia(12%) contrast(95%);
+}
+
+#bookOpenCard span {
+  position: absolute;
+  z-index: 4;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  color: white;
+  font-size: 20px;
+  line-height: 1.15;
+}
+
+/* ROTATE OVERLAY */
+
+#rotateInstruction {
+  position: absolute;
+  z-index: 4;
+  top: calc(50% - 125px);
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.92);
+  font-size: 24px;
+  letter-spacing: 0.03em;
+  opacity: 0;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.72);
+}
+
+#rotateOverlay.visible #rotateInstruction {
+  animation: rotateInstructionFade 3400ms ease forwards;
+}
+
+
+
+@keyframes rotateInstructionFade {
+  0% { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  12% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  78% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+}
+
+
+
+#rotateOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#rotateOverlay.visible {
+  display: flex;
+  animation: rotateOverlayExit 3400ms ease forwards;
+}
+
+#rotatePhoto {
+  position: absolute;
+  inset: -44px;
+  width: calc(100% + 88px);
+  height: calc(100% + 88px);
+  object-fit: cover;
+  filter: blur(34px) brightness(0.42) saturate(0.82);
+  transform: scale(1.1);
+}
+
+.rotateVeil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(247,244,239,0.22), transparent 42%),
+    rgba(5,8,7,0.38);
+}
+
+#deviceIcon {
+  position: relative;
+  z-index: 3;
+  width: 120px;
+  height: 80px;
+  border: 2px solid rgba(255,255,255,0.78);
+  border-radius: 17px;
+  opacity: 0;
+  box-shadow:
+    0 0 34px rgba(255,255,255,0.14),
+    inset 0 0 18px rgba(255,255,255,0.06);
+}
+
+#deviceIcon::after {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.72);
+}
+
+#rotateOverlay.visible.rotateToPortrait #deviceIcon {
+  animation: rotateToPortraitClockwise 3400ms cubic-bezier(.4,0,.2,1) forwards;
+}
+
+#rotateOverlay.visible.rotateToLandscape #deviceIcon {
+  animation: rotateToLandscapeClockwise 3400ms cubic-bezier(.4,0,.2,1) forwards;
+}
+
+/* HOME + SLIDE TRAY BUTTONS */
+
+#homeButton {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 190;
+  width: 150px;
+  height: 56px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+#homeButton img {
+  width: 145px;
+  filter: brightness(0) invert(1);
+}
+
+#slideTrayButton {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  z-index: 191;
+  width: 42px;
+  height: 34px;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+#customTrayScrollbar {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 12px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(238,230,211,0.18);
+  touch-action: none;
+}
+
+#customTrayThumb {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 18px;
+  width: 120px;
+  border-radius: 999px;
+  background: rgba(247,244,239,0.82);
+  box-shadow:
+    0 0 14px rgba(247,244,239,0.28),
+    inset 0 1px rgba(255,255,255,0.45);
+  touch-action: none;
+  cursor: grab;
+}
+
+#customTrayThumb.dragging {
+  cursor: grabbing;
+  background: rgba(247,244,239,0.96);
+}
+
+#slideTrayButton span {
+  display: block;
+  width: 34px;
+  height: 2px;
+  background: rgba(255,255,255,0.9);
+}
+
+body.storyActive #slideTrayButton {
+  display: flex;
+}
+
+body.directoryOpen #homeButton,
+body.introPlaying #homeButton,
+body.rotatingCue #homeButton,
+body.bookOpening #homeButton,
+body.directoryOpen #slideTrayButton,
+body.introPlaying #slideTrayButton,
+body.rotatingCue #slideTrayButton,
+body.bookOpening #slideTrayButton {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* DOTS */
+
+#dots {
+  position: fixed;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  gap: 10px;
+  opacity: 0.78;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.68);
+  background: transparent;
+  cursor: pointer;
+  transition: width 280ms ease, background 280ms ease;
+}
+
+.dot.active {
+  width: 28px;
+  background: #f7f4ef;
+}
+
+/* DIRECTORY */
+
+#directoryScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 160;
+  display: none;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(238,230,211,0.13), transparent 34%),
+    linear-gradient(180deg, #080d0b 0%, #0d120f 48%, #050807 100%);
+  opacity: 0;
+  overflow: hidden;
+}
+
+#directoryScreen.visible {
+  display: block;
+  animation: directoryIn 700ms ease forwards;
+}
+
+.directoryHaze {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,0.035), transparent 22%),
+    radial-gradient(circle at 50% 88%, rgba(158,27,50,0.08), transparent 46%);
+}
+
+#directoryHeader {
+  position: relative;
+  z-index: 162;
+  text-align: center;
+  padding-top: 46px;
+  color: white;
+  opacity: 0;
+  animation: directoryHeaderIn 850ms ease forwards 180ms;
+}
+
+#directoryHeader img {
+  width: 174px;
+  filter: brightness(0) invert(1);
+  margin-bottom: 20px;
+}
+
+#directoryHeader p {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 12px;
+  opacity: 0.72;
+}
+
+#bookGrid {
+  position: relative;
+  z-index: 162;
+  width: min(1120px, 88vw);
+  margin: 62px auto 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 30px;
+}
+
+.bookCard {
+  height: 350px;
+  border: 1px solid rgba(238,230,211,0.24);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.035)),
+    rgba(255,255,255,0.025);
+  color: white;
+  cursor: pointer;
+  padding: 14px;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 28px 74px rgba(0,0,0,0.44),
+    inset 0 1px rgba(255,255,255,0.12),
+    inset 0 -1px rgba(0,0,0,0.52);
+  opacity: 0;
+  transform: translateY(28px);
+  animation: caseIn 780ms ease forwards;
+}
+
+.bookCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(16%) contrast(94%) brightness(0.88);
+}
+
+.bookCard span {
+  position: absolute;
+  z-index: 5;
+  left: 30px;
+  right: 30px;
+  bottom: 30px;
+  font-size: 21px;
+  line-height: 1.12;
+  color: rgba(255,255,255,0.94);
+}
+
+/* SLIDE TRAY — BOTTOM BANNER */
+
+#routeDrawer {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%) translateY(135%);
+  width: min(860px, 84vw);
+  height: 190px;
+  z-index: 180;
+  padding: 16px 18px;
+  background: rgba(5,8,7,0.88);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(238,230,211,0.24);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.5);
+  transition: transform 420ms cubic-bezier(.19,.83,.25,1);
+}
+
+#routeDrawer.visible {
+  transform: translateX(-40%) translateY(-90px);
+}
+
+#routeDrawerHeader p {
+  margin: 0 0 12px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+#routeDrawerGrid {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 104px;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+  scrollbar-color: rgba(247,244,239,0.7) rgba(255,255,255,0.08);
+}
+
+/* Chrome / Edge / Safari */
+
+#routeDrawerGrid::-webkit-scrollbar {
+  display: none;
+}
+
+#routeDrawerGrid::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+}
+
+#routeDrawerGrid::-webkit-scrollbar-thumb {
+  background: rgba(247,244,239,0.72);
+  border-radius: 999px;
+  border: 3px solid rgba(5,8,7,0.88);
+}
+
+#routeDrawerGrid::-webkit-scrollbar-thumb:hover {
+  background: rgba(247,244,239,0.9);
+}
+
+.jumpThumb {
+  flex: 0 0 132px;
+  height: 96px;
+  border: 1px solid rgba(238,230,211,0.22);
+  background: transparent;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+}
+
+.jumpThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(14%) contrast(94%) brightness(0.88);
+}
+
+.jumpThumb.active {
+  outline: 2px solid rgba(247,244,239,0.9);
+}
+
+.jumpThumb.dragging {
+  opacity: 0.45;
+}
+
+.jumpThumb::after {
+  content: attr(data-index);
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+  padding: 3px 6px;
+  font-size: 11px;
+  color: white;
+  background: rgba(5,8,7,0.68);
+}
+
+/* CHAPTER CLOSE */
+
+#chapterClose {
+  position: fixed;
+  inset: 0;
+  z-index: 115;
+  background:
+    radial-gradient(circle at center, rgba(247,244,239,0.16), transparent 42%),
+    rgba(5,8,7,0.84);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+#chapterClose.visible {
+  display: flex;
+  animation: chapterFade 1200ms ease forwards;
+}
+
+#chapterClose img {
+  width: 210px;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+/* ANIMATIONS */
+
+@keyframes comparisonReveal {
+  from { opacity: 0; transform: rotate(0deg) translateY(18px) scale(0.986); }
+  to { opacity: 1; transform: rotate(0deg) translateY(0) scale(1); }
+}
+
+@keyframes portraitRotatedReveal {
+  from { opacity: 0; transform: rotate(0deg) translateY(18px) scale(0.986); }
+  to { opacity: 1; transform: rotate(0deg) translateY(0) scale(1); }
+}
+
+@keyframes landscapeReveal {
+  from { opacity: 0; transform: scaleX(0.982) scaleY(0.992); }
+  to { opacity: 1; transform: scaleX(1) scaleY(1); }
+}
+
+@keyframes imageSettle {
+  from { opacity: 0; transform: translateY(14px) scale(0.988); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes softPulse {
+  0% { filter: sepia(10%) contrast(96%) saturate(90%) brightness(1); }
+  45% { filter: sepia(10%) contrast(99%) saturate(94%) brightness(1.055); }
+  100% { filter: sepia(10%) contrast(96%) saturate(90%) brightness(1); }
+}
+
+@keyframes introContentFade {
+  0% { opacity: 0; transform: translateY(10px) scale(0.97); }
+  28% { opacity: 1; transform: translateY(0) scale(1); }
+  72% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-8px) scale(0.985); }
+}
+
+@keyframes introFadeOut {
+  0%, 78% { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+
+@keyframes bookOverlayIn {
+  to { opacity: 1; }
+}
+
+@keyframes bookBackdropIn {
+  to { opacity: 1; }
+}
+
+@keyframes bookOpenCard {
+  0% { transform: translateY(16px) scale(1); opacity: 1; }
+  42% { transform: translateY(-18px) scale(1.34); opacity: 1; }
+  72% { transform: translateY(-8px) scale(2.35); opacity: 0.9; }
+  100% { transform: translateY(0) scale(3.6); opacity: 0; }
+}
+
+@keyframes rotateOverlayExit {
+  0%, 82% { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes rotateToPortraitClockwise {
+  0% {
+    opacity: 0;
+    transform: scaleX(-1) rotate(0deg) scale(.94);
+  }
+
+  10% {
+    opacity: 1;
+    transform: scaleX(-1) rotate(0deg) scale(1);
+  }
+
+  30% {
+    opacity: 1;
+    transform: scaleX(-1) rotate(0deg) scale(1);
+  }
+
+  58% {
+    opacity: 1;
+    transform: scaleX(-1) rotate(90deg) scale(1.05);
+  }
+
+  88% {
+    opacity: 1;
+    transform: scaleX(-1) rotate(90deg) scale(1.05);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scaleX(-1) rotate(90deg) scale(1.05);
+  }
+}
+
+@keyframes rotateToLandscapeClockwise {
+  0% {
+    opacity: 0;
+    transform: rotate(-90deg) scale(.94);
+  }
+
+  10% {
+    opacity: 1;
+    transform: rotate(-90deg) scale(1);
+  }
+
+  30% {
+    opacity: 1;
+    transform: rotate(-90deg) scale(1);
+  }
+
+  58% {
+    opacity: 1;
+    transform: rotate(-0deg) scale(1.05);
+  }
+
+  88% {
+    opacity: 1;
+    transform: rotate(-0deg) scale(1.05);
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(-0deg) scale(1.05);
+  }
+}
+@keyframes backdropDrift {
+  from { transform: scale(1.1) translateX(-8px); }
+  to { transform: scale(1.13) translateX(8px); }
+}
+
+@keyframes directoryIn {
+  to { opacity: 1; }
+}
+
+@keyframes directoryHeaderIn {
+  to { opacity: 1; }
+}
+
+@keyframes caseIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes chapterFade {
+  to { opacity: 1; }
+}
+
+.jumpThumb {
+  transition:
+    transform 180ms cubic-bezier(.19,.83,.25,1),
+    opacity 180ms ease,
+    outline 180ms ease;
+}
+
+.jumpThumb img {
+  pointer-events: none;
+  user-select: none;
+}
+
+.jumpThumb.lifting {
+  z-index: 20;
+}
+
+.jumpThumb.dragging {
+  opacity: 0.72;
+  box-shadow:
+    0 18px 44px rgba(0,0,0,0.55),
+    0 0 0 2px rgba(247,244,239,0.78);
+}
+
+body.sortingSlides {
+  user-select: none;
+}
+
+.jumpThumb {
+  transition:
+    transform 180ms cubic-bezier(.19,.83,.25,1),
+    opacity 180ms ease,
+    outline 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.jumpThumb img {
+  pointer-events: none;
+  user-select: none;
+}
+
+.jumpThumb.lifting {
+  z-index: 30;
+}
+
+.jumpThumb.dragging {
+  opacity: 0.86;
+  box-shadow:
+    0 18px 44px rgba(0,0,0,0.58),
+    0 0 0 2px rgba(247,244,239,0.85);
+}
+
+.jumpThumb.dropBefore {
+  transform: translateX(-10px);
+  outline: 2px solid rgba(247,244,239,0.7);
+}
+
+.jumpThumb.dropAfter {
+  transform: translateX(10px);
+  outline: 2px solid rgba(247,244,239,0.7);
+}
+
+.jumpThumb.dropBefore {
+  transform: translateX(-14px);
+  outline: 2px solid rgba(247,244,239,0.72);
+}
+
+.jumpThumb.dropAfter {
+  transform: translateX(14px);
+  outline: 2px solid rgba(247,244,239,0.72);
+}
+
+#dropIndicator {
+  position: absolute;
+  top: 54px;
+  left: 0;
+  width: 3px;
+  height: 76px;
+  background: rgba(247,244,239,0.95);
+  box-shadow:
+    0 0 10px rgba(247,244,239,0.95),
+    0 0 24px rgba(247,244,239,0.45);
+  opacity: 0;
+  transform: translateX(0);
+  transition:
+    opacity 140ms ease,
+    transform 140ms cubic-bezier(.19,.83,.25,1);
+  pointer-events: none;
+  z-index: 30;
+}
+
+body.sortingSlides #dropIndicator {
+  opacity: 1;
+}
+
+body.storyActive.portraitMode #app {
+  width: 100vh;
+  height: 100vw;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%) rotate(90deg);
+  transform-origin: center center;
+
+  overflow: hidden;
+}
+
+body.storyActive.portraitMode #routeDrawer {
+  bottom: -36px;
+}
+
+/* LANDSCAPE ONLY — restore original landscape layout */
+
+body.storyActive:not(.portraitMode) #app {
+  width: 100vw;
+  height: 100vh;
+  top: auto;
+  left: auto;
+  transform: none;
+  position: relative;
+}
+
+body.storyActive:not(.portraitMode) .storySlide.landscape .imageStage {
+  inset: 135px 54px 96px;
+}
+
+body.storyActive:not(.portraitMode) .storySlide.landscape .imageStage img {
+  max-width: 94vw;
+  max-height: 78vh;
+  transform: rotate(0deg);
+}
+
+body.storyActive:not(.portraitMode) #homeButton {
+  top: 18px;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+body.storyActive:not(.portraitMode) #slideTrayButton {
+  top: 30px;
+  right: 30px;
+  left: auto;
+  transform: none;
+}
+
+body.storyActive:not(.portraitMode) #dots {
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+body.storyActive:not(.portraitMode) #routeDrawer {
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%) translateY(135%);
+}
+
+body.storyActive:not(.portraitMode) #routeDrawer.visible {
+  transform: translateX(-50%) translateY(0);
+}
+
+#routeDrawer,
+#routeDrawerGrid,
+.jumpThumb,
+.jumpThumb img {
+  touch-action: none;
+  -ms-touch-action: none;
+  overscroll-behavior: contain;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.jumpThumb {
+  -webkit-user-drag: none;
+}
+
+body.sortingSlides,
+body.sortingSlides * {
+  touch-action: none;
+  -ms-touch-action: none;
+}
+
+body.sortingSlides #routeDrawerGrid {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>I Tatti Tour Companion</title>
+
+  <link rel="stylesheet" href="styles.css?v=12" />
+</head>
+
+<body>
+  <main id="app">
+
+    <section id="storyStage"></section>
+
+    <section id="introTransition">
+      <img src="assets/bernard and mary.jpg" class="introPhoto" alt="">
+      <div class="introVeil"></div>
+
+      <div id="introContent">
+        <img src="assets/ITattilogo.png" id="introLogo" alt="I Tatti logo">
+        <h1>The Berensons at I Tatti</h1>
+      </div>
+    </section>
+
+    <section id="bookOpenTransition">
+      <div id="bookOpenBackdrop"></div>
+
+      <div id="bookOpenCard">
+        <img src="assets/bernard and mary.jpg" alt="">
+        <span>The Berensons at I Tatti</span>
+      </div>
+    </section>
+
+    <section id="rotateOverlay">
+      <img id="rotatePhoto" src="" alt="">
+      <div class="rotateVeil"></div>
+      <div id="rotateInstruction">Rotate to portrait</div>
+      <div id="deviceIcon"></div>
+      
+    </section>
+
+    <button id="homeButton" aria-label="Return to directory">
+      <img src="assets/ITattilogo.png" alt="I Tatti">
+    </button>
+
+    <button id="slideTrayButton" aria-label="Open slide tray">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div id="dots"></div>
+
+    <section id="directoryScreen" class="visible">
+      <div class="directoryHaze"></div>
+
+      <div id="directoryHeader">
+        <img src="assets/ITattilogo.png" alt="I Tatti">
+        <p>Tour Companion</p>
+      </div>
+
+      <div id="bookGrid">
+        <button class="bookCard active" data-pack="berensons">
+          <img src="assets/bernard and mary.jpg" alt="">
+          <span>The Berensons at I Tatti</span>
+        </button>
+
+        <button class="bookCard placeholder" data-pack="garden">
+          <span>The Garden</span>
+        </button>
+
+        <button class="bookCard placeholder" data-pack="sassetta">
+          <span>Salone Sassetta</span>
+        </button>
+
+        <button class="bookCard placeholder" data-pack="living">
+          <span>Living at I Tatti</span>
+        </button>
+
+        <button class="bookCard placeholder" data-pack="today">
+          <span>I Tatti Today</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="routeDrawer">
+      <div id="routeDrawerHeader">
+        <p>Slides</p>
+      </div>
+
+      <div id="routeDrawerGrid"></div>
+      <div id="dropIndicator"></div>
+
+      <div id="customTrayScrollbar">
+      <div id="customTrayThumb"></div>
+    </div>
+    </section>
+
+    <section id="chapterClose">
+      <img src="assets/ITattilogo.png" alt="I Tatti logo">
+    </section>
+
+  </main>
+
+  <link rel="stylesheet" href="styles.css?v=72" />
+<script src="script.js?v=72"></script>
+</body>
+</html>
