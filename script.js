@@ -6,6 +6,11 @@ const decks = {
     cover: "bernard and mary.jpg",
     slides: [
       { type: "image", image: "bernard and mary.jpg", orientation: "portrait" },
+
+      { type: "image", image: "Bernard Berenson as a child.jpg", orientation: "portrait" },
+      { type: "image", image: "harvard_yard_aerial_web.jpg", orientation: "portrait" },
+      { type: "image", image: "Harvard Yard 1885.jpg", orientation: "landscape" },
+
       { type: "image", image: "Bernard Berenson in the French Library at Villa I Tatti.jpg", orientation: "landscape" },
       { type: "image", image: "Mary Berenson in the garden at Villa I Tatti.jpg", orientation: "portrait" }
     ]
@@ -13,8 +18,11 @@ const decks = {
 
   garden: {
     title: "The Garden",
-    cover: "Pinsent 7.jpg",
+    cover: "Geoffrey Scott.jpg",
     slides: [
+      { type: "image", image: "Geoffrey Scott.jpg", orientation: "portrait" },
+      { type: "image", image: "Cecil Pinsent in uniform.jpg", orientation: "portrait" },
+
       {
         type: "comparison",
         orientation: "portrait",
@@ -24,7 +32,27 @@ const decks = {
       }
     ]
   },
-    today: {
+
+  living: {
+    title: "Living at I Tatti",
+    cover: "Berenson eating in dining hall.jpg",
+    slides: [
+      { type: "image", image: "Berenson eating in dining hall.jpg", orientation: "portrait" },
+      { type: "image", image: "berensons study 2.jpg", orientation: "landscape" },
+      { type: "image", image: "Berensons study.jpg", orientation: "landscape" },
+      { type: "image", image: "Bernard Berenson in the French Library at Villa I Tatti.jpg", orientation: "landscape" },
+      { type: "image", image: "dining hall.jpg", orientation: "landscape" },
+      { type: "image", image: "garden 8.jpg", orientation: "portrait" },
+      { type: "image", image: "hall stairs.jpg", orientation: "portrait" },
+      { type: "image", image: "hallway 1 from other direction.jpg", orientation: "portrait" },
+      { type: "image", image: "hallway 1.jpg", orientation: "landscape" },
+      { type: "image", image: "hallway 2.jpg", orientation: "landscape" },
+      { type: "image", image: "SALONE SASSETTA 1.jpg", orientation: "landscape" },
+      { type: "image", image: "SALONE SASSETTA 2.jpg", orientation: "portrait" }
+    ]
+  },
+
+  today: {
     title: "I Tatti Today",
     cover: "modern book published from i tatti 3.jpg",
     slides: [
@@ -64,6 +92,11 @@ let uiTimer = null;
 let holdTimer = null;
 let touchStartX = 0;
 let touchStartY = 0;
+let bookTimer = null;
+let introTimer = null;
+let chapterTimer = null;
+let orientationTimer = null;
+let orientationCleanupTimer = null;
 
 const stage = document.getElementById("storyStage");
 const dots = document.getElementById("dots");
@@ -981,12 +1014,38 @@ function showUI() {
   }, 3400);
 }
 
-function openDirectory() {
+function cleanupStoryForDirectory() {
+  clearTimeout(bookTimer);
+  clearTimeout(introTimer);
+  clearTimeout(chapterTimer);
+  clearTimeout(orientationTimer);
+  clearTimeout(orientationCleanupTimer);
+  clearTimeout(uiTimer);
+  clearTimeout(holdTimer);
+
   routeDrawer.classList.remove("visible");
 
-  // Always return homescreen/directory to landscape layout
-  document.body.classList.remove("portraitMode");
-  document.body.classList.remove("storyActive");
+  document.body.classList.remove(
+    "storyActive",
+    "portraitMode",
+    "rotatingCue",
+    "introPlaying",
+    "bookOpening",
+    "preparingSlide",
+    "sortingSlides"
+  );
+
+  rotateOverlay.className = "";
+  introTransition.classList.remove("visible");
+  bookOpenTransition.classList.remove("visible");
+  chapterClose.classList.remove("visible");
+
+  stage.innerHTML = "";
+  dots.innerHTML = "";
+}
+
+function openDirectory() {
+  cleanupStoryForDirectory();
 
   directoryScreen.classList.add("visible");
   document.body.classList.add("directoryOpen");
@@ -1009,14 +1068,14 @@ function closeDirectory() {
 function closeChapter() {
   chapterClose.classList.add("visible");
 
-  setTimeout(() => {
+  chapterTimer = setTimeout(() => {
     chapterClose.classList.remove("visible");
     openDirectory();
   }, 1300);
 }
 
 function setupDirectory() {
-  ["garden", "today"].forEach(packId => {
+  ["garden", "living", "today"].forEach(packId => {
     const card = document.querySelector(`.bookCard[data-pack="${packId}"]`);
 
     if (card && decks[packId]) {
