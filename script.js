@@ -16,7 +16,7 @@ const decks = {
     ]
   },
 
-  garden: {
+    garden: {
     title: "The Garden",
     cover: "Geoffrey Scott.jpg",
     slides: [
@@ -26,10 +26,56 @@ const decks = {
       {
         type: "comparison",
         orientation: "portrait",
+        before: "Pinsent 1.jpg",
+        after: "pinset 1 match.JPG",
+        start: 75
+      },
+      {
+        type: "comparison",
+        orientation: "portrait",
+        before: "Pinsent 2.jpg",
+        after: "Pinset 2 match.JPG",
+        start: 75
+      },
+      {
+        type: "comparison",
+        orientation: "portrait",
+        before: "Pinsent 3.jpg",
+        after: "Pinset 3 match.JPG",
+        start: 75
+      },
+      {
+        type: "comparison",
+        orientation: "portrait",
+        before: "Pinsent 5.jpg",
+        after: "Pinset 5 match.JPG",
+        start: 75
+      },
+      {
+        type: "comparison",
+        orientation: "portrait",
+        before: "Pinsent 8.jpg",
+        after: "Pinset 8 match.JPG",
+        start: 75
+      },
+      {
+        type: "comparison",
+        orientation: "portrait",
+        before: "Pinsent 9.jpg",
+        after: "Pinset 9 match.JPG",
+        start: 75
+      },
+
+      {
+        type: "comparison",
+        orientation: "portrait",
         before: "Pinsent 7.jpg",
         after: "WhatsApp Image 2026-06-25 at 08.42.13.jpeg",
         start: 75
-      }
+      },
+
+      { type: "image", image: "Pinsent 4.jpg", orientation: "portrait" },
+      { type: "image", image: "Pinsent 6.jpg", orientation: "portrait" }
     ]
   },
 
