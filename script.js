@@ -20,13 +20,9 @@ garden: {
   title: "The Garden",
   cover: "Geoffrey Scott.jpg",
   slides: [
-    // Dot 1
     { type: "image", image: "Geoffrey Scott.jpg", orientation: "portrait" },
-
-    // Dot 2
     { type: "image", image: "Cecil Pinsent in uniform.jpg", orientation: "portrait" },
 
-    // Dot 3 — Original comparison
     {
       type: "comparison",
       orientation: "portrait",
@@ -35,7 +31,6 @@ garden: {
       start: 75
     },
 
-    // Dot 4
     {
       type: "comparison",
       orientation: "portrait",
@@ -44,30 +39,26 @@ garden: {
       start: 75
     },
 
-    // Dot 5
     {
       type: "comparison",
       orientation: "portrait",
       before: "Pinsent 2.jpg",
-      beforeRotate: -90,
       after: "Pinset 2 match.JPG",
+      afterRotate: -90,
       start: 75
     },
 
-    // Dot 6
     {
       type: "comparison",
       orientation: "portrait",
       before: "Pinsent 3.jpg",
-      beforeRotate: -90,
       after: "Pinset 3 match.JPG",
+      afterRotate: -90,
       start: 75
     },
 
-    // Dot 7
     { type: "image", image: "Pinsent 4.jpg", orientation: "portrait" },
 
-    // Dot 8
     {
       type: "comparison",
       orientation: "portrait",
@@ -76,20 +67,17 @@ garden: {
       start: 75
     },
 
-    // Dot 9
     { type: "image", image: "Pinsent 6.jpg", orientation: "portrait" },
 
-    // Dot 10
     {
       type: "comparison",
       orientation: "portrait",
       before: "Pinsent 8.jpg",
-      beforeRotate: -90,
       after: "Pinset 8 match.JPG",
+      afterRotate: -90,
       start: 75
     },
 
-    // Dot 11
     {
       type: "comparison",
       orientation: "portrait",
