@@ -16,7 +16,7 @@ const decks = {
     ]
   },
 
-        garden: {
+garden: {
   title: "The Garden",
   cover: "Geoffrey Scott.jpg",
   slides: [
@@ -49,6 +49,7 @@ const decks = {
       type: "comparison",
       orientation: "portrait",
       before: "Pinsent 2.jpg",
+      beforeRotate: -90,
       after: "Pinset 2 match.JPG",
       start: 75
     },
@@ -58,6 +59,7 @@ const decks = {
       type: "comparison",
       orientation: "portrait",
       before: "Pinsent 3.jpg",
+      beforeRotate: -90,
       after: "Pinset 3 match.JPG",
       start: 75
     },
@@ -82,6 +84,7 @@ const decks = {
       type: "comparison",
       orientation: "portrait",
       before: "Pinsent 8.jpg",
+      beforeRotate: -90,
       after: "Pinset 8 match.JPG",
       start: 75
     },
