@@ -41,7 +41,6 @@ const decks = {
       orientation: "portrait",
       before: "Pinsent 1.jpg",
       after: "pinset 1 match.JPG",
-      afterRotate: -90,
       start: 75
     },
 
@@ -51,7 +50,6 @@ const decks = {
       orientation: "portrait",
       before: "Pinsent 2.jpg",
       after: "Pinset 2 match.JPG",
-      afterRotate: 90,
       start: 75
     },
 
@@ -85,7 +83,6 @@ const decks = {
       orientation: "portrait",
       before: "Pinsent 8.jpg",
       after: "Pinset 8 match.JPG",
-      afterRotate: -90,
       start: 75
     },
 
