@@ -17,90 +17,88 @@ const decks = {
   },
 
         garden: {
-    title: "The Garden",
-    cover: "Geoffrey Scott.jpg",
-    slides: [
-      { type: "image", image: "Geoffrey Scott.jpg", orientation: "portrait" },
-      { type: "image", image: "Cecil Pinsent in uniform.jpg", orientation: "portrait" },
+  title: "The Garden",
+  cover: "Geoffrey Scott.jpg",
+  slides: [
+    // Dot 1
+    { type: "image", image: "Geoffrey Scott.jpg", orientation: "portrait" },
 
-      {
-        type: "comparison",
-        orientation: "portrait",
-        before: "Pinsent 7.jpg",
-        after: "WhatsApp Image 2026-06-25 at 08.42.13.jpeg",
-        start: 75
-      },
+    // Dot 2
+    { type: "image", image: "Cecil Pinsent in uniform.jpg", orientation: "portrait" },
 
-      {
-        type: "comparison",
-        orientation: "portrait",
-        before: "Pinsent 1.jpg",
-        after: "pinset 1 match.JPG",
-        start: 75
-      },
-      {
-        type: "comparison",
-        orientation: "portrait",
-        before: "Pinsent 2.jpg",
-        after: "Pinset 2 match.JPG",
-        start: 75
-      },
-      {
-        type: "comparison",
-        orientation: "portrait",
-        before: "Pinsent 3.jpg",
-        after: "Pinset 3 match.JPG",
-        start: 75
-      },
+    // Dot 3 — Original comparison
+    {
+      type: "comparison",
+      orientation: "portrait",
+      before: "Pinsent 7.jpg",
+      after: "WhatsApp Image 2026-06-25 at 08.42.13.jpeg",
+      start: 75
+    },
 
-      { type: "image", image: "Pinsent 4.jpg", orientation: "portrait" },
+    // Dot 4
+    {
+      type: "comparison",
+      orientation: "portrait",
+      before: "Pinsent 1.jpg",
+      after: "pinset 1 match.JPG",
+      afterRotate: -90,
+      start: 75
+    },
 
-      {
-        type: "comparison",
-        orientation: "portrait",
-        before: "Pinsent 5.jpg",
-        after: "Pinset 5 match.JPG",
-        start: 75
-      },
+    // Dot 5
+    {
+      type: "comparison",
+      orientation: "portrait",
+      before: "Pinsent 2.jpg",
+      after: "Pinset 2 match.JPG",
+      afterRotate: -90,
+      start: 75
+    },
 
-      { type: "image", image: "Pinsent 6.jpg", orientation: "portrait" },
+    // Dot 6
+    {
+      type: "comparison",
+      orientation: "portrait",
+      before: "Pinsent 3.jpg",
+      after: "Pinset 3 match.JPG",
+      start: 75
+    },
 
-      {
-        type: "comparison",
-        orientation: "portrait",
-        before: "Pinsent 8.jpg",
-        after: "Pinset 8 match.JPG",
-        start: 75
-      },
-      {
-        type: "comparison",
-        orientation: "portrait",
-        before: "Pinsent 9.jpg",
-        after: "Pinset 9 match.JPG",
-        start: 75
-      }
-    ]
-  },
+    // Dot 7
+    { type: "image", image: "Pinsent 4.jpg", orientation: "portrait" },
 
-  living: {
-    title: "Living at I Tatti",
-    cover: "Berenson eating in dining hall.jpg",
-    slides: [
-      { type: "image", image: "Berenson eating in dining hall.jpg", orientation: "portrait" },
-      { type: "image", image: "berensons study 2.jpg", orientation: "landscape" },
-      { type: "image", image: "Berensons study.jpg", orientation: "landscape" },
-      { type: "image", image: "Bernard Berenson in the French Library at Villa I Tatti.jpg", orientation: "landscape" },
-      { type: "image", image: "dining hall.jpg", orientation: "landscape" },
-      { type: "image", image: "garden 8.jpg", orientation: "portrait" },
-      { type: "image", image: "hall stairs.jpg", orientation: "portrait" },
-      { type: "image", image: "hallway 1 from other direction.jpg", orientation: "portrait" },
-      { type: "image", image: "hallway 1.jpg", orientation: "landscape" },
-      { type: "image", image: "hallway 2.jpg", orientation: "landscape" },
-      { type: "image", image: "SALONE SASSETTA 1.jpg", orientation: "landscape" },
-      { type: "image", image: "SALONE SASSETTA 2.jpg", orientation: "portrait" }
-    ]
-  },
+    // Dot 8
+    {
+      type: "comparison",
+      orientation: "portrait",
+      before: "Pinsent 5.jpg",
+      after: "Pinset 5 match.JPG",
+      start: 75
+    },
 
+    // Dot 9
+    { type: "image", image: "Pinsent 6.jpg", orientation: "portrait" },
+
+    // Dot 10
+    {
+      type: "comparison",
+      orientation: "portrait",
+      before: "Pinsent 8.jpg",
+      after: "Pinset 8 match.JPG",
+      afterRotate: -90,
+      start: 75
+    },
+
+    // Dot 11
+    {
+      type: "comparison",
+      orientation: "portrait",
+      before: "Pinsent 9.jpg",
+      after: "Pinset 9 match.JPG",
+      start: 75
+    }
+  ]
+},
   today: {
     title: "I Tatti Today",
     cover: "modern book published from i tatti 3.jpg",
@@ -485,8 +483,22 @@ function renderStory() {
 
           <div class="imageStage">
             <div class="comparisonStage" style="--split:${slide.start || 75}%">
-              <div class="comparisonImage base" style="background-image:url('${A + slide.after}')"></div>
-              <div class="comparisonImage reveal" style="background-image:url('${A + slide.before}')"></div>
+              <div
+                class="comparisonImage base"
+                style="
+                  background-image:url('${A + slide.after}');
+                  transform: rotate(${slide.afterRotate || 0}deg) scale(${slide.afterRotate ? 1.35 : 1});
+                "
+              ></div>
+
+              <div
+                class="comparisonImage reveal"
+                style="
+                  background-image:url('${A + slide.before}');
+                  transform: rotate(${slide.beforeRotate || 0}deg) scale(${slide.beforeRotate ? 1.35 : 1});
+                "
+              ></div>
+
               <div class="comparisonDivider"></div>
               <div class="comparisonHandle"></div>
             </div>
