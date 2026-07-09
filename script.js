@@ -480,21 +480,25 @@ function renderStory() {
 
           <div class="imageStage">
             <div class="comparisonStage" style="--split:${slide.start || 75}%">
-              <div
-                class="comparisonImage base"
-                style="
-                  background-image:url('${A + slide.after}');
-                  transform: rotate(${slide.afterRotate || 0}deg) scale(${slide.afterRotate ? 1.35 : 1});
-                "
-              ></div>
+              <div class="comparisonImage base">
+                <div
+                  class="comparisonImageInner"
+                  style="
+                    background-image:url('${A + slide.after}');
+                    transform: rotate(${slide.afterRotate || 0}deg) scale(${slide.afterRotate ? 1.32 : 1});
+                  "
+                ></div>
+              </div>
 
-              <div
-                class="comparisonImage reveal"
-                style="
-                  background-image:url('${A + slide.before}');
-                  transform: rotate(${slide.beforeRotate || 0}deg) scale(${slide.beforeRotate ? 1.35 : 1});
-                "
-              ></div>
+              <div class="comparisonImage reveal">
+                <div
+                  class="comparisonImageInner"
+                  style="
+                    background-image:url('${A + slide.before}');
+                    transform: rotate(${slide.beforeRotate || 0}deg) scale(${slide.beforeRotate ? 1.32 : 1});
+                  "
+                ></div>
+              </div>
 
               <div class="comparisonDivider"></div>
               <div class="comparisonHandle"></div>
@@ -527,7 +531,10 @@ function renderStory() {
       event.stopPropagation();
 
       const targetIndex = Number(dot.dataset.index);
-      if (targetIndex !== current) goToSlide(targetIndex);
+
+      if (targetIndex !== current) {
+        goToSlide(targetIndex);
+      }
     });
   });
 
