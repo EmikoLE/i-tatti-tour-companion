@@ -158,7 +158,8 @@ body.preparingSlide #storyStage {
 .comparisonImage {
   position: absolute;
   inset: 0;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
   filter: sepia(10%) contrast(96%) saturate(90%);
   user-select: none;
