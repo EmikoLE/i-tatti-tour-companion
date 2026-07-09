@@ -160,7 +160,7 @@ body.preparingSlide #storyStage {
   inset: 0;
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center center;
   filter: sepia(10%) contrast(96%) saturate(90%);
   user-select: none;
   pointer-events: none;
@@ -234,7 +234,7 @@ body.preparingSlide #storyStage {
   display: none;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
   opacity: 0;
 }
 
