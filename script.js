@@ -6,87 +6,128 @@ const decks = {
     cover: "bernard and mary.jpg",
     slides: [
       { type: "image", image: "bernard and mary.jpg", orientation: "portrait" },
-
       { type: "image", image: "Bernard Berenson as a child.jpg", orientation: "portrait" },
       { type: "image", image: "harvard_yard_aerial_web.jpg", orientation: "portrait" },
       { type: "image", image: "Harvard Yard 1885.jpg", orientation: "landscape" },
-
       { type: "image", image: "Bernard Berenson in the French Library at Villa I Tatti.jpg", orientation: "landscape" },
       { type: "image", image: "Mary Berenson in the garden at Villa I Tatti.jpg", orientation: "portrait" }
     ]
   },
 
-garden: {
-  title: "The Garden",
-  cover: "Geoffrey Scott.jpg",
-  slides: [
-    { type: "image", image: "Geoffrey Scott.jpg", orientation: "portrait" },
-    { type: "image", image: "Cecil Pinsent in uniform.jpg", orientation: "portrait" },
+  garden: {
+    title: "The Garden",
+    cover: "Geoffrey Scott.jpg",
+    slides: [
+      { type: "image", image: "Geoffrey Scott.jpg", orientation: "portrait" },
+      { type: "image", image: "Cecil Pinsent in uniform.jpg", orientation: "portrait" },
 
-    {
-      type: "comparison",
-      orientation: "portrait",
-      before: "Pinsent 7.jpg",
-      after: "WhatsApp Image 2026-06-25 at 08.42.13.jpeg",
-      start: 75
-    },
+      {
+        type: "comparison",
+        orientation: "portrait",
+        before: "Pinsent 7.jpg",
+        after: "WhatsApp Image 2026-06-25 at 08.42.13.jpeg",
+        start: 75
+      },
 
-    {
-      type: "comparison",
-      orientation: "portrait",
-      before: "Pinsent 1.jpg",
-      after: "pinset 1 match.JPG",
-      start: 75
-    },
+      {
+        type: "comparison",
+        orientation: "portrait",
+        before: "Pinsent 1.jpg",
+        after: "pinset 1 match.JPG",
+        start: 75
+      },
 
-    {
-      type: "comparison",
-      orientation: "portrait",
-      before: "Pinsent 2.jpg",
-      after: "Pinset 2 match.JPG",
-      afterRotate: -90,
-      start: 75
-    },
+      {
+        type: "comparison",
+        orientation: "portrait",
+        before: "Pinsent 2.jpg",
+        after: "Pinset 2 match.JPG",
+        afterRotate: -90,
+        start: 75
+      },
 
-    {
-      type: "comparison",
-      orientation: "portrait",
-      before: "Pinsent 3.jpg",
-      after: "Pinset 3 match.JPG",
-      afterRotate: -90,
-      start: 75
-    },
+      {
+        type: "comparison",
+        orientation: "portrait",
+        before: "Pinsent 3.jpg",
+        after: "Pinset 3 match.JPG",
+        afterRotate: -90,
+        start: 75
+      },
 
-    { type: "image", image: "Pinsent 4.jpg", orientation: "portrait" },
+      { type: "image", image: "Pinsent 4.jpg", orientation: "portrait" },
 
-    {
-      type: "comparison",
-      orientation: "portrait",
-      before: "Pinsent 5.jpg",
-      after: "Pinset 5 match.JPG",
-      start: 75
-    },
+      {
+        type: "comparison",
+        orientation: "portrait",
+        before: "Pinsent 5.jpg",
+        after: "Pinset 5 match.JPG",
+        start: 75
+      },
 
-    { type: "image", image: "Pinsent 6.jpg", orientation: "portrait" },
+      { type: "image", image: "Pinsent 6.jpg", orientation: "portrait" },
 
-    {
-      type: "comparison",
-      orientation: "portrait",
-      before: "Pinsent 8.jpg",
-      after: "Pinset 8 match.JPG",
-      afterRotate: -90,
-      start: 75
-    },
+      {
+        type: "comparison",
+        orientation: "portrait",
+        before: "Pinsent 8.jpg",
+        after: "Pinset 8 match.JPG",
+        afterRotate: -90,
+        start: 75
+      },
 
-    {
-      type: "comparison",
-      orientation: "portrait",
-      before: "Pinsent 9.jpg",
-      after: "Pinset 9 match.JPG",
-      start: 75
-    }
-  ]
-},
+      {
+        type: "comparison",
+        orientation: "portrait",
+        before: "Pinsent 9.jpg",
+        after: "Pinset 9 match.JPG",
+        start: 75
+      }
+    ]
+  },
+
+  sassetta: {
+    title: "Salone Sassetta",
+    cover: "SALONE SASSETTA 1.jpg",
+    slides: [
+      { type: "image", image: "SALONE SASSETTA 1.jpg", orientation: "landscape" },
+      { type: "image", image: "SALONE SASSETTA 2.jpg", orientation: "portrait" },
+
+      { type: "image", image: "reconstruction 3.png", orientation: "landscape" },
+
+      {
+        type: "zoom",
+        image: "reconstruction 3.png",
+        orientation: "landscape",
+        x: 28,
+        y: 50,
+        scale: 2.15
+      },
+
+      { type: "image", image: "reconstruction 1.png", orientation: "landscape" },
+      { type: "image", image: "reconstruction 4.png", orientation: "portrait" },
+      { type: "image", image: "reconstruction 6.png", orientation: "portrait" },
+      { type: "image", image: "reconstruction 7.png", orientation: "portrait" },
+
+      { type: "image", image: "reconstruction 3.png", orientation: "landscape" },
+
+      {
+        type: "zoom",
+        image: "reconstruction 3.png",
+        orientation: "landscape",
+        x: 72,
+        y: 50,
+        scale: 2.15
+      },
+
+      { type: "image", image: "reconstruction 2.png", orientation: "landscape" },
+      { type: "image", image: "reconstruction 8.png", orientation: "portrait" },
+      { type: "image", image: "reconstruction 9.png", orientation: "portrait" },
+
+      { type: "image", image: "reconstruction 3.png", orientation: "landscape" }
+    ]
+  },
+
   today: {
     title: "I Tatti Today",
     cover: "modern book published from i tatti 3.jpg",
@@ -158,7 +199,8 @@ const routeDrawerGrid = document.getElementById("routeDrawerGrid");
 const chapterClose = document.getElementById("chapterClose");
 
 function slidePreviewImage(slide) {
-  return slide.type === "comparison" ? slide.before : slide.image;
+  if (slide.type === "comparison") return slide.before;
+  return slide.image;
 }
 function preloadDeck(deck) {
   const images = new Set();
@@ -461,6 +503,31 @@ function renderStory() {
     const preview = slidePreviewImage(slide);
     const imageUrl = A + preview;
 
+    if (slide.type === "zoom") {
+      return `
+        <article
+          class="storySlide ${slide.orientation} ${index === current ? "active justArrived" : ""}"
+          style="--image:url('${imageUrl}')"
+        >
+          <div class="backdrop"></div>
+
+          <div class="imageStage">
+            <div class="zoomStage">
+              <img
+                src="${imageUrl}"
+                alt=""
+                style="
+                  --zoom-scale:${slide.scale || 1};
+                  --zoom-x:${slide.x || 50}%;
+                  --zoom-y:${slide.y || 50}%;
+                "
+              >
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
     if (slide.type === "comparison") {
       return `
         <article
@@ -522,10 +589,7 @@ function renderStory() {
       event.stopPropagation();
 
       const targetIndex = Number(dot.dataset.index);
-
-      if (targetIndex !== current) {
-        goToSlide(targetIndex);
-      }
+      if (targetIndex !== current) goToSlide(targetIndex);
     });
   });
 
