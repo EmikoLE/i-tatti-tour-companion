@@ -1,5 +1,4 @@
 const A = "assets/";
-
 const decks = {
   berensons: {
     title: "The Berensons at I Tatti",
@@ -94,37 +93,36 @@ const decks = {
       { type: "image", image: "SALONE SASSETTA 2.jpg", orientation: "portrait" },
 
       { type: "image", image: "reconstruction 3.png", orientation: "landscape" },
-
-      {
-        type: "zoom",
-        image: "reconstruction 3.png",
-        orientation: "landscape",
-        x: 28,
-        y: 50,
-        scale: 2.15
-      },
-
       { type: "image", image: "reconstruction 1.png", orientation: "landscape" },
       { type: "image", image: "reconstruction 4.png", orientation: "portrait" },
       { type: "image", image: "reconstruction 6.png", orientation: "portrait" },
       { type: "image", image: "reconstruction 7.png", orientation: "portrait" },
 
       { type: "image", image: "reconstruction 3.png", orientation: "landscape" },
-
-      {
-        type: "zoom",
-        image: "reconstruction 3.png",
-        orientation: "landscape",
-        x: 72,
-        y: 50,
-        scale: 2.15
-      },
-
       { type: "image", image: "reconstruction 2.png", orientation: "landscape" },
       { type: "image", image: "reconstruction 8.png", orientation: "portrait" },
       { type: "image", image: "reconstruction 9.png", orientation: "portrait" },
 
       { type: "image", image: "reconstruction 3.png", orientation: "landscape" }
+    ]
+  },
+
+  living: {
+    title: "Living at I Tatti",
+    cover: "Berenson eating in dining hall.jpg",
+    slides: [
+      { type: "image", image: "Berenson eating in dining hall.jpg", orientation: "portrait" },
+      { type: "image", image: "berensons study 2.jpg", orientation: "landscape" },
+      { type: "image", image: "Berensons study.jpg", orientation: "landscape" },
+      { type: "image", image: "Bernard Berenson in the French Library at Villa I Tatti.jpg", orientation: "landscape" },
+      { type: "image", image: "dining hall.jpg", orientation: "landscape" },
+      { type: "image", image: "garden 8.jpg", orientation: "portrait" },
+      { type: "image", image: "hall stairs.jpg", orientation: "portrait" },
+      { type: "image", image: "hallway 1 from other direction.jpg", orientation: "portrait" },
+      { type: "image", image: "hallway 1.jpg", orientation: "landscape" },
+      { type: "image", image: "hallway 2.jpg", orientation: "landscape" },
+      { type: "image", image: "SALONE SASSETTA 1.jpg", orientation: "landscape" },
+      { type: "image", image: "SALONE SASSETTA 2.jpg", orientation: "portrait" }
     ]
   },
 
@@ -1195,7 +1193,7 @@ function closeChapter() {
 }
 
 function setupDirectory() {
-  ["garden", "living", "today"].forEach(packId => {
+  ["garden", "sassetta", "living", "today"].forEach(packId => {
     const card = document.querySelector(`.bookCard[data-pack="${packId}"]`);
 
     if (card && decks[packId]) {
