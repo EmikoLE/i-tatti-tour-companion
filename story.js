@@ -1,14 +1,13 @@
 import { decks } from "./decks.js?v=1";
 import { ComparisonSliders } from "./comparisonSlider.js?v=1";
 import { Tray } from "./tray.js?v=1";
+import { RotateIndicator } from "./rotateIndicator.js?v=1";
 
 const A = "assets/";
 
 const BOOK_OPEN_DURATION_MS = 1800;
 const INTRO_DURATION_MS = 2900;
 const JUST_ARRIVED_DURATION_MS = 1200;
-const ROTATE_CUE_DURATION_MS = 3400;
-const ROTATE_CUE_CLEANUP_DELAY_MS = 150;
 const SLIDE_TRANSITION_LOCK_MS = 300;
 const UI_AUTOHIDE_DELAY_MS = 3400;
 
@@ -69,26 +68,13 @@ function applySavedSlideOrder(deckId, slides) {
   return [...ordered, ...remaining];
 }
 
-function getCueClass(currentOrientation, targetOrientation) {
-  if (currentOrientation === targetOrientation) return null;
-
-  if (currentOrientation === "landscape" && targetOrientation === "portrait") {
-    return "rotateToPortrait";
-  }
-
-  if (currentOrientation === "portrait" && targetOrientation === "landscape") {
-    return "rotateToLandscape";
-  }
-
-  return null;
-}
-
 export class Story {
   constructor({ onChapterEnd }) {
     this.onChapterEnd = onChapterEnd;
 
     this.comparisonSliders = new ComparisonSliders();
     this.tray = new Tray();
+    this.rotateIndicator = new RotateIndicator();
 
     this.activeDeckId = "berensons";
     this.storySlides = [];
@@ -114,10 +100,6 @@ export class Story {
     this.bookOpenBackdrop = document.getElementById("bookOpenBackdrop");
     this.bookOpenCardImg = document.querySelector("#bookOpenCard img");
     this.bookOpenCardTitle = document.querySelector("#bookOpenCard span");
-
-    this.rotateOverlay = document.getElementById("rotateOverlay");
-    this.rotatePhoto = document.getElementById("rotatePhoto");
-    this.rotateInstruction = document.getElementById("rotateInstruction");
 
     this.directoryScreen = document.getElementById("directoryScreen");
   }
@@ -181,10 +163,8 @@ export class Story {
 
         this.introFinished = true;
 
-        this.showInitialOrientationCue(() => {
-          this.renderStory();
-          document.body.classList.add("storyActive");
-        });
+        this.renderStory();
+        document.body.classList.add("storyActive");
       }, INTRO_DURATION_MS);
     }, BOOK_OPEN_DURATION_MS);
   }
@@ -327,68 +307,15 @@ export class Story {
   }
 
   updateOrientationUI() {
-    if (this.storySlides[this.current]?.orientation === "portrait") {
+    const isPortrait = this.storySlides[this.current]?.orientation === "portrait";
+
+    if (isPortrait) {
       document.body.classList.add("portraitMode");
     } else {
       document.body.classList.remove("portraitMode");
     }
-  }
 
-  showInitialOrientationCue(callback) {
-    const firstSlide = this.storySlides[this.current];
-    const cue = getCueClass("landscape", firstSlide.orientation);
-
-    if (!cue) {
-      callback();
-      return;
-    }
-
-    this.rotatePhoto.src = A + slidePreviewImage(firstSlide);
-    this.rotateInstruction.textContent =
-      firstSlide.orientation === "portrait" ? "Rotate to portrait" : "Rotate to landscape";
-
-    document.body.classList.add("preparingSlide", "rotatingCue");
-
-    this.rotateOverlay.className = "";
-    this.rotateOverlay.classList.add("visible", cue);
-
-    setTimeout(() => {
-      callback();
-
-      setTimeout(() => {
-        this.rotateOverlay.className = "";
-        document.body.classList.remove("preparingSlide", "rotatingCue");
-      }, ROTATE_CUE_CLEANUP_DELAY_MS);
-    }, ROTATE_CUE_DURATION_MS);
-  }
-
-  showOrientationCue(targetIndex, callback) {
-    const currentOrientation = this.storySlides[this.current].orientation;
-    const targetOrientation = this.storySlides[targetIndex].orientation;
-    const cue = getCueClass(currentOrientation, targetOrientation);
-
-    if (!cue) {
-      callback();
-      return;
-    }
-
-    this.rotatePhoto.src = A + slidePreviewImage(this.storySlides[targetIndex]);
-    this.rotateInstruction.textContent =
-      targetOrientation === "portrait" ? "Rotate to portrait" : "Rotate to landscape";
-
-    document.body.classList.add("preparingSlide", "rotatingCue");
-
-    this.rotateOverlay.className = "";
-    this.rotateOverlay.classList.add("visible", cue);
-
-    setTimeout(() => {
-      callback();
-
-      setTimeout(() => {
-        this.rotateOverlay.className = "";
-        document.body.classList.remove("preparingSlide", "rotatingCue");
-      }, ROTATE_CUE_CLEANUP_DELAY_MS);
-    }, ROTATE_CUE_DURATION_MS);
+    this.rotateIndicator.setVisible(isPortrait);
   }
 
   goToSlide(targetIndex) {
@@ -396,14 +323,12 @@ export class Story {
 
     this.isTransitioning = true;
 
-    this.showOrientationCue(targetIndex, () => {
-      this.current = targetIndex;
-      this.renderStory();
+    this.current = targetIndex;
+    this.renderStory();
 
-      setTimeout(() => {
-        this.isTransitioning = false;
-      }, SLIDE_TRANSITION_LOCK_MS);
-    });
+    setTimeout(() => {
+      this.isTransitioning = false;
+    }, SLIDE_TRANSITION_LOCK_MS);
   }
 
   next() {
@@ -450,7 +375,6 @@ export class Story {
       "sortingSlides"
     );
 
-    this.rotateOverlay.className = "";
     this.introTransition.classList.remove("visible");
     this.bookOpenTransition.classList.remove("visible");
 

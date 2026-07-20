@@ -6,7 +6,7 @@
 
   <title>I Tatti Tour Companion</title>
 
-  <link rel="stylesheet" href="styles.css?v=12" />
+  <link rel="stylesheet" href="styles.css?v=14" />
 </head>
 
 <body>
@@ -50,6 +50,11 @@
       <span></span>
     </button>
 
+    <button id="rotateIndicator" aria-label="Rotate suggestion">
+      <span id="rotateIndicatorIcon"></span>
+      <span id="rotateIndicatorTip">Rotate your phone for the best view</span>
+    </button>
+
     <div id="dots"></div>
 
     <section id="directoryScreen" class="visible">
@@ -58,6 +63,7 @@
       <div id="directoryHeader">
         <img src="assets/ITattilogo.png" alt="I Tatti">
         <p>Tour Companion</p>
+        <button id="onboardingReplay">How it works</button>
       </div>
 
       <div id="bookGrid">
@@ -101,8 +107,67 @@
       <img src="assets/ITattilogo.png" alt="I Tatti logo">
     </section>
 
+    <section id="onboarding">
+      <div id="onboardingBackdrop"></div>
+      <div class="onboardingHaze"></div>
+
+      <button id="onboardingSkip">Skip</button>
+
+      <div id="onboardingCard">
+        <p id="onboardingEyebrow"></p>
+        <h2 id="onboardingTitle"></h2>
+
+        <div id="onboardingVisual">
+          <div class="onboardingVisualStep" data-step="0">
+            <img src="assets/ITattilogo.png" class="onboardingLogo" alt="I Tatti logo">
+          </div>
+
+          <div class="onboardingVisualStep" data-step="1">
+            <div class="swipeDemo">
+              <span class="swipeArrow left">&#8249;</span>
+              <span class="swipeArrow right">&#8250;</span>
+            </div>
+          </div>
+
+          <div class="onboardingVisualStep" data-step="2">
+            <div class="onboardingRotateIcon"></div>
+          </div>
+
+          <div class="onboardingVisualStep" data-step="3">
+            <div class="reorderDemo">
+              <span class="reorderThumb one"></span>
+              <span class="reorderThumb two"></span>
+              <span class="reorderThumb three"></span>
+            </div>
+          </div>
+
+          <div class="onboardingVisualStep" data-step="4">
+            <div class="menuDemo">
+              <span class="menuDemoIcon logo"></span>
+              <span class="menuDemoIcon tray">
+                <span></span><span></span><span></span>
+              </span>
+            </div>
+          </div>
+
+          <div class="onboardingVisualStep" data-step="5">
+            <img src="assets/ITattilogo.png" class="onboardingLogo" alt="I Tatti logo">
+          </div>
+        </div>
+
+        <p id="onboardingBody"></p>
+      </div>
+
+      <div id="onboardingDots"></div>
+
+      <div id="onboardingNav">
+        <button id="onboardingBack">Back</button>
+        <button id="onboardingNext">Next</button>
+      </div>
+    </section>
+
   </main>
 
-  <script type="module" src="main.js?v=1"></script>
+  <script type="module" src="main.js?v=3"></script>
 </body>
 </html>

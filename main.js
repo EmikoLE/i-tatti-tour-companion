@@ -1,5 +1,6 @@
-import { Story } from "./story.js?v=1";
+import { Story } from "./story.js?v=2";
 import { Directory } from "./directory.js?v=1";
+import { Onboarding } from "./onboarding.js?v=1";
 
 const CHAPTER_CLOSE_DURATION_MS = 1300;
 const HOLD_TO_OPEN_DELAY_MS = 650;
@@ -7,6 +8,7 @@ const HOLD_TO_OPEN_DELAY_MS = 650;
 const homeButton = document.getElementById("homeButton");
 const slideTrayButton = document.getElementById("slideTrayButton");
 const chapterClose = document.getElementById("chapterClose");
+const onboardingReplay = document.getElementById("onboardingReplay");
 
 let holdTimer = null;
 let touchStartX = 0;
@@ -15,6 +17,7 @@ let chapterTimer = null;
 
 const directory = new Directory();
 const story = new Story({ onChapterEnd: () => closeChapter() });
+const onboarding = new Onboarding({ onFinish: () => openDirectory() });
 
 function openDirectory() {
   clearTimeout(chapterTimer);
@@ -86,7 +89,9 @@ document.addEventListener("click", event => {
     event.target.closest(".dot") ||
     event.target.closest("#homeButton") ||
     event.target.closest("#slideTrayButton") ||
-    event.target.closest(".comparisonStage")
+    event.target.closest("#rotateIndicator") ||
+    event.target.closest(".comparisonStage") ||
+    event.target.closest("#onboarding")
   ) {
     return;
   }
@@ -102,10 +107,12 @@ document.addEventListener("mousedown", event => {
   if (
     event.target.closest("#homeButton") ||
     event.target.closest("#slideTrayButton") ||
+    event.target.closest("#rotateIndicator") ||
     event.target.closest("#directoryScreen") ||
     event.target.closest("#routeDrawer") ||
     event.target.closest(".dot") ||
-    event.target.closest(".comparisonStage")
+    event.target.closest(".comparisonStage") ||
+    event.target.closest("#onboarding")
   ) {
     return;
   }
@@ -127,10 +134,12 @@ document.addEventListener("touchstart", event => {
   if (
     event.target.closest("#homeButton") ||
     event.target.closest("#slideTrayButton") ||
+    event.target.closest("#rotateIndicator") ||
     event.target.closest("#directoryScreen") ||
     event.target.closest("#routeDrawer") ||
     event.target.closest(".dot") ||
-    event.target.closest(".comparisonStage")
+    event.target.closest(".comparisonStage") ||
+    event.target.closest("#onboarding")
   ) {
     return;
   }
@@ -176,7 +185,9 @@ document.addEventListener("touchend", event => {
 
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
-    if (story.tray.isOpen) {
+    if (onboarding.isOpen) {
+      onboarding.close();
+    } else if (story.tray.isOpen) {
       story.tray.close();
     } else {
       closeDirectory();
@@ -190,5 +201,15 @@ document.addEventListener("keydown", event => {
   if (event.key === "ArrowLeft") story.prev();
 });
 
+onboardingReplay.addEventListener("click", event => {
+  event.stopPropagation();
+  onboarding.open();
+});
+
 directory.setup(packId => story.launchDeck(packId));
-openDirectory();
+
+if (Onboarding.hasBeenSeen()) {
+  openDirectory();
+} else {
+  onboarding.open();
+}
