@@ -1,6 +1,6 @@
 import { Story } from "./story.js?v=3";
 import { Directory } from "./directory.js?v=1";
-import { Onboarding } from "./onboarding.js?v=1";
+import { Onboarding } from "./onboarding.js?v=3";
 
 const CHAPTER_CLOSE_DURATION_MS = 1300;
 const HOLD_TO_OPEN_DELAY_MS = 650;

@@ -22,6 +22,16 @@ const STEPS = [
     body: "Open the slide tray and drag any thumbnail to rearrange the chapter your way."
   },
   {
+    eyebrow: "Before you save anything",
+    title: "Dragging alone doesn’t stick",
+    body: "Rearranging slides changes what you see right now, but it resets the next time this chapter loads. Nothing is saved unless you're in Designer Mode and you press Save."
+  },
+  {
+    eyebrow: "Curating a tour",
+    title: "Preview freely, save on purpose",
+    body: "Turn on Designer Mode from the directory screen to see saved tours as chips. Tap one to preview it, drag to adjust, then press Save to update it or Save as new to name a fresh one. Whichever you save becomes what everyone sees — saved per browser, per chapter."
+  },
+  {
     eyebrow: "Finding your way",
     title: "The logo and menu are always there",
     body: "Tap the I Tatti logo to return to the directory, or the menu to jump between slides."
