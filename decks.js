@@ -5,8 +5,8 @@ export const decks = {
     slides: [
       { type: "image", image: "bernard and mary.jpg", orientation: "portrait" },
       { type: "image", image: "Bernard Berenson as a child.jpg", orientation: "portrait" },
-      { type: "image", image: "harvard_yard_aerial_web.jpg", orientation: "portrait" },
       { type: "image", image: "Harvard Yard 1885.jpg", orientation: "landscape" },
+      { type: "image", image: "harvard_yard_aerial_web.jpg", orientation: "portrait" },
       { type: "image", image: "Mary Berenson in the garden at Villa I Tatti.jpg", orientation: "portrait" }
     ]
   },
@@ -15,18 +15,18 @@ export const decks = {
     title: "Living at I Tatti",
     cover: "SALONE SASSETTA 1.jpg",
     slides: [
+      { type: "image", image: "Bernard Berenson in the French Library at Villa I Tatti.jpg", orientation: "landscape" },
       { type: "image", image: "SALONE SASSETTA 1.jpg", orientation: "landscape" },
       { type: "image", image: "SALONE SASSETTA 2.jpg", orientation: "portrait" },
+      { type: "image", image: "marys clock.jpeg", orientation: "portrait" },
       { type: "image", image: "hallway 1.jpg", orientation: "landscape" },
       { type: "image", image: "hallway 1 from other direction.jpg", orientation: "portrait" },
       { type: "image", image: "hallway 2.jpg", orientation: "landscape" },
-      { type: "image", image: "marys clock.jpeg", orientation: "portrait" },
-      { type: "image", image: "Bernard Berenson in the French Library at Villa I Tatti.jpg", orientation: "landscape" },
+      { type: "image", image: "hall stairs.jpg", orientation: "portrait" },
       { type: "image", image: "berensons study 2.jpg", orientation: "landscape" },
       { type: "image", image: "Berensons study.jpg", orientation: "landscape" },
       { type: "image", image: "dining hall.jpg", orientation: "landscape" },
-      { type: "image", image: "Berenson eating in dining hall.jpg", orientation: "portrait" },
-      { type: "image", image: "hall stairs.jpg", orientation: "portrait" }
+      { type: "image", image: "Berenson eating in dining hall.jpg", orientation: "portrait" }
     ]
   },
 
@@ -37,8 +37,8 @@ export const decks = {
       { type: "image", image: "Geoffrey Scott.jpg", orientation: "portrait" },
       { type: "image", image: "Cecil Pinsent in uniform.jpg", orientation: "portrait" },
 
-      { type: "image", image: "stone vases in liabry.jpeg", orientation: "portrait" },
       { type: "image", image: "stone vases on limoneia.jpeg", orientation: "portrait" },
+      { type: "image", image: "stone vases in liabry.jpeg", orientation: "portrait" },
 
       { type: "image", image: "hallway 1.jpg", orientation: "landscape" },
       { type: "image", image: "formal garden symmetry.jpeg", orientation: "portrait" },

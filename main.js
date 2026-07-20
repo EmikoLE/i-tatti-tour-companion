@@ -1,4 +1,4 @@
-import { Story } from "./story.js?v=2";
+import { Story } from "./story.js?v=3";
 import { Directory } from "./directory.js?v=1";
 import { Onboarding } from "./onboarding.js?v=1";
 

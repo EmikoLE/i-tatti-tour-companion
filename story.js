@@ -2,6 +2,7 @@ import { decks } from "./decks.js?v=1";
 import { ComparisonSliders } from "./comparisonSlider.js?v=1";
 import { Tray } from "./tray.js?v=1";
 import { RotateIndicator } from "./rotateIndicator.js?v=1";
+import { TourDesigner, resolveDeckSlides, applyOrderToSlides } from "./tourDesigner.js?v=1";
 
 const A = "assets/";
 
@@ -39,35 +40,6 @@ function preloadDeck(deck) {
   });
 }
 
-function getSavedSlideOrder(deckId) {
-  const saved = localStorage.getItem(`slideOrder_${deckId}`);
-  if (!saved) return null;
-
-  try {
-    return JSON.parse(saved);
-  } catch {
-    return null;
-  }
-}
-
-function applySavedSlideOrder(deckId, slides) {
-  const savedOrder = getSavedSlideOrder(deckId);
-  if (!savedOrder) return slides;
-
-  const ordered = [];
-  const remaining = [...slides];
-
-  savedOrder.forEach(savedImage => {
-    const matchIndex = remaining.findIndex(slide => slidePreviewImage(slide) === savedImage);
-
-    if (matchIndex !== -1) {
-      ordered.push(remaining.splice(matchIndex, 1)[0]);
-    }
-  });
-
-  return [...ordered, ...remaining];
-}
-
 export class Story {
   constructor({ onChapterEnd }) {
     this.onChapterEnd = onChapterEnd;
@@ -75,6 +47,7 @@ export class Story {
     this.comparisonSliders = new ComparisonSliders();
     this.tray = new Tray();
     this.rotateIndicator = new RotateIndicator();
+    this.designer = new TourDesigner(this);
 
     this.activeDeckId = "berensons";
     this.storySlides = [];
@@ -106,7 +79,7 @@ export class Story {
 
   prepareDeck(deckId) {
     this.activeDeckId = deckId;
-    this.storySlides = applySavedSlideOrder(deckId, [...decks[deckId].slides]);
+    this.storySlides = resolveDeckSlides(deckId, decks[deckId].slides);
 
     const deck = decks[deckId];
 
@@ -125,6 +98,7 @@ export class Story {
 
     this.prepareDeck(deckId);
     requestAnimationFrame(() => preloadDeck(decks[deckId]));
+    this.designer.onDeckChanged();
 
     this.current = 0;
     this.introFinished = false;
@@ -296,14 +270,29 @@ export class Story {
     this.storySlides.splice(insertIndex, 0, movedSlide);
     this.current = this.storySlides.indexOf(currentSlide);
 
-    this.saveSlideOrder();
+    this.renderStory();
+  }
+
+  currentOrderSnapshot() {
+    return this.storySlides.map(slide => slidePreviewImage(slide));
+  }
+
+  applyOrderDraft(order) {
+    const currentSlide = this.storySlides[this.current];
+
+    this.storySlides = applyOrderToSlides(order, decks[this.activeDeckId].slides);
+
+    const newIndex = this.storySlides.indexOf(currentSlide);
+    this.current = newIndex !== -1 ? newIndex : 0;
 
     this.renderStory();
   }
 
-  saveSlideOrder() {
-    const order = this.storySlides.map(slide => slidePreviewImage(slide));
-    localStorage.setItem(`slideOrder_${this.activeDeckId}`, JSON.stringify(order));
+  reloadActiveOrder() {
+    this.storySlides = resolveDeckSlides(this.activeDeckId, decks[this.activeDeckId].slides);
+    this.current = Math.min(this.current, this.storySlides.length - 1);
+
+    this.renderStory();
   }
 
   updateOrientationUI() {
