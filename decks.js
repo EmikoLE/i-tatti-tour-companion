@@ -7,7 +7,8 @@ export const decks = {
       { type: "image", image: "Bernard Berenson as a child.jpg", orientation: "portrait" },
       { type: "image", image: "Harvard Yard 1885.jpg", orientation: "landscape" },
       { type: "image", image: "harvard_yard_aerial_web.jpg", orientation: "portrait" },
-      { type: "image", image: "Mary Berenson in the garden at Villa I Tatti.jpg", orientation: "portrait" }
+      { type: "image", image: "Mary Berenson in the garden at Villa I Tatti.jpg", orientation: "portrait" },
+      { type: "image", image: "map showing berensons travels.png", orientation: "landscape" }
     ]
   },
 
@@ -64,7 +65,7 @@ export const decks = {
         orientation: "portrait",
         before: "Pinsent 2.jpg",
         after: "Pinset 2 match.JPG",
-        afterRotate: -90,
+        beforeRotate: -90,
         start: 75
       },
 
@@ -73,7 +74,7 @@ export const decks = {
         orientation: "portrait",
         before: "Pinsent 3.jpg",
         after: "Pinset 3 match.JPG",
-        afterRotate: -90,
+        beforeRotate: 90,
         start: 75
       },
 
@@ -94,7 +95,7 @@ export const decks = {
         orientation: "portrait",
         before: "Pinsent 8.jpg",
         after: "Pinset 8 match.JPG",
-        afterRotate: -90,
+        beforeRotate: 90,
         start: 75
       },
 
@@ -110,25 +111,11 @@ export const decks = {
 
   sassetta: {
     title: "Salone Sassetta",
-    cover: "SALONE SASSETTA 1.jpg",
+    cover: "Reconstruction of Borgo San Sepolcro Altarpiece Madonna and Child Enthroned with six angels.jpg",
     slides: [
-      { type: "image", image: "SALONE SASSETTA 1.jpg", orientation: "landscape" },
-      { type: "image", image: "SALONE SASSETTA 2.jpg", orientation: "portrait" },
-
-      { type: "image", image: "reconstruction 3.png", orientation: "landscape" },
-
-      { type: "image", image: "reconstruction 1.png", orientation: "landscape" },
-      { type: "image", image: "reconstruction 4.png", orientation: "portrait" },
-      { type: "image", image: "reconstruction 6.png", orientation: "portrait" },
-      { type: "image", image: "reconstruction 7.png", orientation: "portrait" },
-
-      { type: "image", image: "reconstruction 3.png", orientation: "landscape" },
-
-      { type: "image", image: "reconstruction 2.png", orientation: "landscape" },
-      { type: "image", image: "reconstruction 8.png", orientation: "portrait" },
-      { type: "image", image: "reconstruction 9.png", orientation: "portrait" },
-
-      { type: "image", image: "reconstruction 3.png", orientation: "landscape" }
+      { type: "embed", src: "embeds/sassetta-altarpiece-flip.html", orientation: "landscape" },
+      { type: "embed", src: "embeds/sassetta-reunited-scattered.html", orientation: "landscape" },
+      { type: "embed", src: "embeds/sassetta-altarpiece-to-triptych.html", orientation: "landscape" }
     ]
   },
 

@@ -1,6 +1,6 @@
-import { decks } from "./decks.js?v=1";
+import { decks } from "./decks.js?v=6";
 import { ComparisonSliders } from "./comparisonSlider.js?v=1";
-import { Tray } from "./tray.js?v=3";
+import { Tray } from "./tray.js?v=4";
 import { RotateIndicator } from "./rotateIndicator.js?v=1";
 import {
   resolveDeckSlides,
@@ -22,8 +22,28 @@ const JUST_ARRIVED_DURATION_MS = 1200;
 const SLIDE_TRANSITION_LOCK_MS = 300;
 const UI_AUTOHIDE_DELAY_MS = 3400;
 
+const EMBED_CANVAS_WIDTH = 1200;
+const EMBED_CANVAS_HEIGHT = 700;
+
+function scaleEmbedFrames() {
+  document.querySelectorAll(".embedFrameWrap").forEach(wrap => {
+    const iframe = wrap.querySelector(".embedFrame");
+    if (!iframe) return;
+
+    const scale = Math.min(
+      wrap.clientWidth / EMBED_CANVAS_WIDTH,
+      wrap.clientHeight / EMBED_CANVAS_HEIGHT
+    );
+
+    if (scale > 0) {
+      iframe.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    }
+  });
+}
+
 function slidePreviewImage(slide) {
   if (slide.type === "comparison") return slide.before;
+  if (slide.type === "embed") return slide.src;
   return slide.image;
 }
 
@@ -79,6 +99,8 @@ export class Story {
     this.bookOpenCardTitle = document.querySelector("#bookOpenCard span");
 
     this.directoryScreen = document.getElementById("directoryScreen");
+
+    window.addEventListener("resize", () => scaleEmbedFrames());
   }
 
   resolveSlidesForDeck(deckId) {
@@ -261,6 +283,18 @@ export class Story {
 
   renderStory() {
     this.stage.innerHTML = this.storySlides.map((slide, index) => {
+      if (slide.type === "embed") {
+        return `
+          <article class="storySlide ${slide.orientation} embedSlide ${index === this.current ? "active justArrived" : ""}">
+            <div class="imageStage">
+              <div class="embedFrameWrap">
+                <iframe class="embedFrame" src="${slide.src}" loading="lazy" title="Interactive Sassetta illustration"></iframe>
+              </div>
+            </div>
+          </article>
+        `;
+      }
+
       const preview = slidePreviewImage(slide);
       const imageUrl = resolveAssetUrl(preview, slide.custom);
 
@@ -357,6 +391,7 @@ export class Story {
     this.updateOrientationUI();
     this.renderRouteDrawer();
     this.showUI();
+    scaleEmbedFrames();
 
     setTimeout(() => {
       document.querySelectorAll(".justArrived").forEach(slide => {

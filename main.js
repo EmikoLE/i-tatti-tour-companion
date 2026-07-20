@@ -1,10 +1,11 @@
-import { Story } from "./story.js?v=9";
-import { Directory } from "./directory.js?v=3";
+import { Story } from "./story.js?v=14";
+import { Directory } from "./directory.js?v=8";
 import { Onboarding } from "./onboarding.js?v=4";
-import { ToursScreen } from "./toursScreen.js?v=4";
-import { TourEditBar } from "./tourEditBar.js?v=5";
+import { ToursScreen } from "./toursScreen.js?v=9";
+import { TourEditBar } from "./tourEditBar.js?v=10";
+import { Credits } from "./credits.js?v=1";
 import { showHintOnce } from "./hints.js?v=1";
-import { initCustomContent } from "./customDecks.js?v=2";
+import { initCustomContent } from "./customDecks.js?v=7";
 import { preloadAllImages } from "./imageStore.js?v=1";
 
 initCustomContent();
@@ -17,6 +18,7 @@ const slideTrayButton = document.getElementById("slideTrayButton");
 const chapterClose = document.getElementById("chapterClose");
 const onboardingReplay = document.getElementById("onboardingReplay");
 const toursButton = document.getElementById("toursButton");
+const creditsButton = document.getElementById("creditsButton");
 
 let holdTimer = null;
 let touchStartX = 0;
@@ -29,6 +31,7 @@ const story = new Story({
   onContentChanged: () => directory.refreshCustomDecks()
 });
 const onboarding = new Onboarding({ onFinish: () => openDirectory() });
+const credits = new Credits();
 const addPhotosInput = document.getElementById("addPhotosInput");
 
 const tourEditBar = new TourEditBar({
@@ -133,6 +136,11 @@ toursButton.addEventListener("click", event => {
   toursScreen.open();
 });
 
+creditsButton.addEventListener("click", event => {
+  event.stopPropagation();
+  credits.open();
+});
+
 document.addEventListener("click", event => {
   if (
     story.tray.isOpen &&
@@ -155,6 +163,7 @@ document.addEventListener("click", event => {
     directory.isOpen ||
     story.tray.isOpen ||
     toursScreen.isOpen ||
+    credits.isOpen ||
     event.target.closest(".dot") ||
     event.target.closest("#homeButton") ||
     event.target.closest("#slideTrayButton") ||
@@ -162,7 +171,8 @@ document.addEventListener("click", event => {
     event.target.closest("#tourEditBar") ||
     event.target.closest(".comparisonStage") ||
     event.target.closest("#onboarding") ||
-    event.target.closest("#toursScreen")
+    event.target.closest("#toursScreen") ||
+    event.target.closest("#creditsScreen")
   ) {
     return;
   }
@@ -185,7 +195,8 @@ document.addEventListener("mousedown", event => {
     event.target.closest(".dot") ||
     event.target.closest(".comparisonStage") ||
     event.target.closest("#onboarding") ||
-    event.target.closest("#toursScreen")
+    event.target.closest("#toursScreen") ||
+    event.target.closest("#creditsScreen")
   ) {
     return;
   }
@@ -214,7 +225,8 @@ document.addEventListener("touchstart", event => {
     event.target.closest(".dot") ||
     event.target.closest(".comparisonStage") ||
     event.target.closest("#onboarding") ||
-    event.target.closest("#toursScreen")
+    event.target.closest("#toursScreen") ||
+    event.target.closest("#creditsScreen")
   ) {
     return;
   }
@@ -233,7 +245,8 @@ document.addEventListener("touchend", event => {
     story.comparisonSliders.isDragging ||
     directory.isOpen ||
     story.tray.isOpen ||
-    toursScreen.isOpen
+    toursScreen.isOpen ||
+    credits.isOpen
   ) {
     return;
   }
@@ -263,6 +276,8 @@ document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
     if (onboarding.isOpen) {
       onboarding.close();
+    } else if (credits.isOpen) {
+      credits.close();
     } else if (toursScreen.isOpen) {
       if (toursScreen.view === "detail") {
         toursScreen.showList();

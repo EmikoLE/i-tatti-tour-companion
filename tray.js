@@ -41,13 +41,17 @@ export class Tray {
       const hidden = isHidden ? isHidden(slide) : false;
       const deletable = isDeletable ? isDeletable(slide) : false;
 
+      const thumbContent = slide.type === "embed"
+        ? `<div class="jumpThumbEmbed"><span>Interactive</span></div>`
+        : `<img src="${imageUrl(slide)}" alt="" draggable="false">`;
+
       return `
         <button
           class="jumpThumb ${index === currentIndex ? "active" : ""} ${hidden ? "hidden" : ""}"
           data-slide-index="${index}"
           data-index="${index + 1}"
         >
-          <img src="${imageUrl(slide)}" alt="" draggable="false">
+          ${thumbContent}
           ${onToggleHidden ? `
             <span class="hideToggle" data-toggle-index="${index}">
               <span class="eyeIcon"></span>

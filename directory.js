@@ -1,4 +1,4 @@
-import { decks } from "./decks.js?v=1";
+import { decks } from "./decks.js?v=6";
 import { resolveAssetUrl } from "./imageStore.js?v=1";
 
 export class Directory {

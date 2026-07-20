@@ -1,4 +1,4 @@
-import { decks } from "./decks.js?v=1";
+import { decks } from "./decks.js?v=6";
 import {
   getTours,
   getCurrentTourId,

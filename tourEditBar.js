@@ -1,4 +1,4 @@
-import { decks } from "./decks.js?v=1";
+import { decks } from "./decks.js?v=6";
 import { getTour } from "./tours.js?v=2";
 
 const SAVE_CONFIRM_DURATION_MS = 1400;
