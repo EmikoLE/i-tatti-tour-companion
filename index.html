@@ -1,110 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
 
   <title>I Tatti Tour Companion</title>
 
-  <link rel="stylesheet" href="styles.css?v=12" />
+  <link rel="stylesheet" href="styles.css?v=74">
 </head>
 
 <body>
   <main id="app">
 
+    <!-- FIRST-LOAD TUTORIAL -->
+
+    <section
+      id="tutorialOverlay"
+      aria-labelledby="tutorialTitle"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div id="tutorialBackdrop"></div>
+
+      <div id="tutorialCard">
+        <button
+          id="tutorialSkipButton"
+          type="button"
+          aria-label="Skip tutorial"
+        >
+          Skip
+        </button>
+
+        <div id="tutorialVisual" aria-hidden="true">
+          <div id="tutorialDeviceIcon">
+            <span></span>
+          </div>
+
+          <div id="tutorialGestureIcon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+        <div id="tutorialContent">
+          <p id="tutorialEyebrow">How to use the Tour Companion</p>
+
+          <h1 id="tutorialTitle">
+            Welcome to I Tatti
+          </h1>
+
+          <p id="tutorialText">
+            The photographs are organised into thematic decks that can be
+            opened from the directory.
+          </p>
+        </div>
+
+        <div id="tutorialProgress" aria-label="Tutorial progress">
+          <span class="tutorialDot active"></span>
+          <span class="tutorialDot"></span>
+          <span class="tutorialDot"></span>
+          <span class="tutorialDot"></span>
+        </div>
+
+        <button
+          id="tutorialNextButton"
+          type="button"
+        >
+          Continue
+        </button>
+      </div>
+    </section>
+
+
+    <!-- STORY -->
+
     <section id="storyStage"></section>
 
+
+    <!-- DECK INTRODUCTION -->
+
     <section id="introTransition">
-      <img src="assets/bernard and mary.jpg" class="introPhoto" alt="">
+      <img
+        src="assets/bernard and mary.jpg"
+        class="introPhoto"
+        alt=""
+      >
+
       <div class="introVeil"></div>
 
       <div id="introContent">
-        <img src="assets/ITattilogo.png" id="introLogo" alt="I Tatti logo">
+        <img
+          src="assets/ITattilogo.png"
+          id="introLogo"
+          alt="I Tatti logo"
+        >
+
         <h1>The Berensons at I Tatti</h1>
       </div>
     </section>
+
+
+    <!-- BOOK-OPEN TRANSITION -->
 
     <section id="bookOpenTransition">
       <div id="bookOpenBackdrop"></div>
 
       <div id="bookOpenCard">
-        <img src="assets/bernard and mary.jpg" alt="">
+        <img
+          src="assets/bernard and mary.jpg"
+          alt=""
+        >
+
         <span>The Berensons at I Tatti</span>
       </div>
     </section>
 
-    <section id="rotateOverlay">
+
+    <!--
+      TEMPORARY COMPATIBILITY ELEMENT
+
+      Your current JavaScript still searches for these elements.
+      It is hidden, so visitors will no longer see the rotation screen.
+
+      In the JavaScript step, we will remove all rotation-cue logic.
+    -->
+
+    <section id="rotateOverlay" hidden aria-hidden="true">
       <img id="rotatePhoto" src="" alt="">
       <div class="rotateVeil"></div>
-      <div id="rotateInstruction">Rotate to portrait</div>
+      <div id="rotateInstruction"></div>
       <div id="deviceIcon"></div>
-      
     </section>
 
-    <button id="homeButton" aria-label="Return to directory">
-      <img src="assets/ITattilogo.png" alt="I Tatti">
+
+    <!-- TOP CONTROLS -->
+
+    <button
+      id="homeButton"
+      type="button"
+      aria-label="Return to directory"
+    >
+      <img
+        src="assets/ITattilogo.png"
+        alt="I Tatti"
+      >
     </button>
 
-    <button id="slideTrayButton" aria-label="Open slide tray">
+    <button
+      id="slideTrayButton"
+      type="button"
+      aria-label="Open slide tray"
+      aria-expanded="false"
+    >
       <span></span>
       <span></span>
       <span></span>
     </button>
+
+
+    <!-- SLIDE POSITION DOTS -->
 
     <div id="dots"></div>
+
+
+    <!-- DIRECTORY -->
 
     <section id="directoryScreen" class="visible">
       <div class="directoryHaze"></div>
 
       <div id="directoryHeader">
-        <img src="assets/ITattilogo.png" alt="I Tatti">
+        <img
+          src="assets/ITattilogo.png"
+          alt="I Tatti"
+        >
+
         <p>Tour Companion</p>
       </div>
 
       <div id="bookGrid">
-        <button class="bookCard active" data-pack="berensons">
-          <img src="assets/bernard and mary.jpg" alt="">
+
+        <button
+          class="bookCard active"
+          type="button"
+          data-pack="berensons"
+        >
+          <img
+            src="assets/bernard and mary.jpg"
+            alt=""
+          >
+
           <span>The Berensons at I Tatti</span>
         </button>
 
-        <button class="bookCard placeholder" data-pack="garden">
+        <button
+          class="bookCard placeholder"
+          type="button"
+          data-pack="garden"
+        >
           <span>The Garden</span>
         </button>
 
-        <button class="bookCard placeholder" data-pack="sassetta">
+        <button
+          class="bookCard placeholder"
+          type="button"
+          data-pack="sassetta"
+        >
           <span>Salone Sassetta</span>
         </button>
 
-        <button class="bookCard placeholder" data-pack="living">
+        <button
+          class="bookCard placeholder"
+          type="button"
+          data-pack="living"
+        >
           <span>Living at I Tatti</span>
         </button>
 
-        <button class="bookCard placeholder" data-pack="today">
+        <button
+          class="bookCard placeholder"
+          type="button"
+          data-pack="today"
+        >
           <span>I Tatti Today</span>
         </button>
+
       </div>
     </section>
 
-    <section id="routeDrawer">
+
+    <!-- SLIDE TRAY -->
+
+    <section
+      id="routeDrawer"
+      aria-label="Slide organiser"
+    >
       <div id="routeDrawerHeader">
         <p>Slides</p>
       </div>
 
       <div id="routeDrawerGrid"></div>
+
       <div id="dropIndicator"></div>
 
       <div id="customTrayScrollbar">
-      <div id="customTrayThumb"></div>
-    </div>
+        <div id="customTrayThumb"></div>
+      </div>
     </section>
 
+
+    <!-- END-OF-CHAPTER TRANSITION -->
+
     <section id="chapterClose">
-      <img src="assets/ITattilogo.png" alt="I Tatti logo">
+      <img
+        src="assets/ITattilogo.png"
+        alt="I Tatti logo"
+      >
     </section>
 
   </main>
 
-
-<script src="script.js?v=73"></script>
+  <script src="script.js?v=74"></script>
 </body>
 </html>
