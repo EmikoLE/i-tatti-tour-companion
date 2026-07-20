@@ -1,8 +1,18 @@
 import { decks } from "./decks.js?v=1";
 import { ComparisonSliders } from "./comparisonSlider.js?v=1";
-import { Tray } from "./tray.js?v=1";
+import { Tray } from "./tray.js?v=3";
 import { RotateIndicator } from "./rotateIndicator.js?v=1";
-import { TourDesigner, resolveDeckSlides, applyOrderToSlides } from "./tourDesigner.js?v=1";
+import {
+  resolveDeckSlides,
+  applyOrderToSlides,
+  getTour,
+  updateDeckOrder,
+  clearDeckOrder,
+  toggleHiddenSlide,
+  clearHiddenSlides
+} from "./tours.js?v=2";
+import { resolveAssetUrl } from "./imageStore.js?v=1";
+import { addImageToDeck, removeImageFromDeck } from "./customDecks.js?v=2";
 
 const A = "assets/";
 
@@ -18,36 +28,30 @@ function slidePreviewImage(slide) {
 }
 
 function preloadDeck(deck) {
-  const images = new Set();
-
   deck.slides.forEach(slide => {
-    if (slide.image) {
-      images.add(slide.image);
-    }
+    [slide.image, slide.before, slide.after].forEach(key => {
+      if (!key) return;
 
-    if (slide.before) {
-      images.add(slide.before);
-    }
+      const url = resolveAssetUrl(key, slide.custom);
+      if (!url) return;
 
-    if (slide.after) {
-      images.add(slide.after);
-    }
-  });
-
-  images.forEach(src => {
-    const img = new Image();
-    img.src = A + src;
+      const img = new Image();
+      img.src = url;
+    });
   });
 }
 
 export class Story {
-  constructor({ onChapterEnd }) {
+  constructor({ onChapterEnd, onContentChanged }) {
     this.onChapterEnd = onChapterEnd;
+    this.onContentChanged = onContentChanged;
 
     this.comparisonSliders = new ComparisonSliders();
     this.tray = new Tray();
     this.rotateIndicator = new RotateIndicator();
-    this.designer = new TourDesigner(this);
+
+    this.editingTourId = null;
+    this.editingDeckId = null;
 
     this.activeDeckId = "berensons";
     this.storySlides = [];
@@ -77,20 +81,133 @@ export class Story {
     this.directoryScreen = document.getElementById("directoryScreen");
   }
 
+  resolveSlidesForDeck(deckId) {
+    const baseSlides = decks[deckId].slides;
+
+    if (this.editingTourId) {
+      const tour = getTour(this.editingTourId);
+      const order = tour && tour.deckOrders[deckId];
+      return order ? applyOrderToSlides(order, baseSlides) : [...baseSlides];
+    }
+
+    return resolveDeckSlides(deckId, baseSlides);
+  }
+
+  enterTourEditing(tourId, deckId) {
+    this.editingTourId = tourId;
+    this.editingDeckId = deckId;
+  }
+
+  exitTourEditing() {
+    this.editingTourId = null;
+    this.editingDeckId = null;
+  }
+
+  saveCurrentDeckOrder() {
+    if (!this.editingTourId) return;
+    updateDeckOrder(this.editingTourId, this.activeDeckId, this.currentOrderSnapshot());
+  }
+
+  resetCurrentDeckOrder() {
+    if (!this.editingTourId) return;
+    clearDeckOrder(this.editingTourId, this.activeDeckId);
+    clearHiddenSlides(this.editingTourId, this.activeDeckId);
+    this.refreshSlidesFromSource();
+  }
+
+  refreshSlidesFromSource() {
+    this.storySlides = this.resolveSlidesForDeck(this.activeDeckId);
+    this.current = Math.min(this.current, this.storySlides.length - 1);
+    this.renderStory();
+  }
+
+  toggleSlideHidden(index) {
+    if (!this.editingTourId) return;
+
+    const slide = this.storySlides[index];
+    if (!slide) return;
+
+    toggleHiddenSlide(this.editingTourId, this.activeDeckId, slidePreviewImage(slide));
+    this.renderRouteDrawer();
+  }
+
+  deleteSlideAtIndex(index) {
+    if (!this.editingTourId) return;
+
+    const slide = this.storySlides[index];
+    if (!slide || !slide.custom) return;
+
+    const confirmed = window.confirm("Remove this photo? This can't be undone.");
+    if (!confirmed) return;
+
+    removeImageFromDeck(this.activeDeckId, slide.image).then(() => {
+      this.storySlides.splice(index, 1);
+      this.current = Math.min(this.current, Math.max(0, this.storySlides.length - 1));
+      this.renderRouteDrawer();
+
+      if (this.onContentChanged) this.onContentChanged();
+    });
+  }
+
+  async addPhotosFromFiles(fileList) {
+    if (!this.editingTourId) return;
+
+    const files = Array.from(fileList).filter(file => file.type.startsWith("image/"));
+    let addedFirstCover = false;
+
+    for (const file of files) {
+      const hadCover = Boolean(decks[this.activeDeckId].cover);
+
+      try {
+        const slide = await addImageToDeck(this.activeDeckId, file);
+        if (slide) {
+          this.storySlides.push(slide);
+          if (!hadCover && decks[this.activeDeckId].cover) addedFirstCover = true;
+        }
+      } catch {
+        // skip files that fail to store; the rest still get added
+      }
+    }
+
+    this.renderRouteDrawer();
+
+    if (addedFirstCover && this.onContentChanged) this.onContentChanged();
+  }
+
   prepareDeck(deckId) {
     this.activeDeckId = deckId;
-    this.storySlides = resolveDeckSlides(deckId, decks[deckId].slides);
+    this.storySlides = this.resolveSlidesForDeck(deckId);
 
     const deck = decks[deckId];
 
     preloadDeck(deck);
 
-    this.introPhoto.src = A + deck.cover;
+    const coverUrl = resolveAssetUrl(deck.cover, deck.custom);
+
+    this.introPhoto.src = coverUrl;
     this.introTitle.textContent = deck.title;
 
-    this.bookOpenBackdrop.style.setProperty("--book-image", `url("${A + deck.cover}")`);
-    this.bookOpenCardImg.src = A + deck.cover;
+    this.bookOpenBackdrop.style.setProperty("--book-image", coverUrl ? `url("${coverUrl}")` : "none");
+    this.bookOpenCardImg.src = coverUrl;
     this.bookOpenCardTitle.textContent = deck.title;
+  }
+
+  launchDeckForEditing(deckId) {
+    if (!decks[deckId]) return;
+
+    this.prepareDeck(deckId);
+
+    this.current = 0;
+    this.introFinished = true;
+    this.isTransitioning = false;
+    this.comparisonSliders.reset();
+
+    this.directoryScreen.classList.remove("visible");
+    document.body.classList.remove("directoryOpen", "bookOpening", "introPlaying");
+    document.body.classList.add("storyActive");
+
+    this.renderStory();
+    this.tray.open();
   }
 
   launchDeck(deckId) {
@@ -98,7 +215,6 @@ export class Story {
 
     this.prepareDeck(deckId);
     requestAnimationFrame(() => preloadDeck(decks[deckId]));
-    this.designer.onDeckChanged();
 
     this.current = 0;
     this.introFinished = false;
@@ -146,7 +262,7 @@ export class Story {
   renderStory() {
     this.stage.innerHTML = this.storySlides.map((slide, index) => {
       const preview = slidePreviewImage(slide);
-      const imageUrl = A + preview;
+      const imageUrl = resolveAssetUrl(preview, slide.custom);
 
       if (slide.type === "zoom") {
         return `
@@ -250,10 +366,21 @@ export class Story {
   }
 
   renderRouteDrawer() {
+    const tour = this.editingTourId ? getTour(this.editingTourId) : null;
+    const hiddenSet = tour ? new Set((tour.hiddenSlides && tour.hiddenSlides[this.activeDeckId]) || []) : null;
+
     this.tray.render(this.storySlides, this.current, {
-      imageUrl: slide => A + slidePreviewImage(slide),
-      onTap: targetIndex => this.goToSlide(targetIndex),
-      onReorder: (fromIndex, toIndex) => this.reorderSlides(fromIndex, toIndex)
+      imageUrl: slide => resolveAssetUrl(slidePreviewImage(slide), slide.custom),
+      onTap: targetIndex => {
+        this.goToSlide(targetIndex);
+        if (!this.editingTourId) this.tray.close();
+      },
+      onReorder: (fromIndex, toIndex) => this.reorderSlides(fromIndex, toIndex),
+      isHidden: hiddenSet ? slide => hiddenSet.has(slidePreviewImage(slide)) : null,
+      onToggleHidden: this.editingTourId ? index => this.toggleSlideHidden(index) : null,
+      onAddPhotos: this.editingTourId ? () => document.getElementById("addPhotosInput").click() : null,
+      isDeletable: this.editingTourId ? slide => Boolean(slide.custom) : null,
+      onDeletePhoto: this.editingTourId ? index => this.deleteSlideAtIndex(index) : null
     });
   }
 
@@ -277,26 +404,8 @@ export class Story {
     return this.storySlides.map(slide => slidePreviewImage(slide));
   }
 
-  applyOrderDraft(order) {
-    const currentSlide = this.storySlides[this.current];
-
-    this.storySlides = applyOrderToSlides(order, decks[this.activeDeckId].slides);
-
-    const newIndex = this.storySlides.indexOf(currentSlide);
-    this.current = newIndex !== -1 ? newIndex : 0;
-
-    this.renderStory();
-  }
-
-  reloadActiveOrder() {
-    this.storySlides = resolveDeckSlides(this.activeDeckId, decks[this.activeDeckId].slides);
-    this.current = Math.min(this.current, this.storySlides.length - 1);
-
-    this.renderStory();
-  }
-
   updateOrientationUI() {
-    const isPortrait = this.storySlides[this.current]?.orientation === "portrait";
+    const isPortrait = this.storySlides[this.current]?.orientation === "portrait" && !this.editingTourId;
 
     if (isPortrait) {
       document.body.classList.add("portraitMode");

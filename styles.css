@@ -4,6 +4,7 @@
   --ground-light: #232b22;
   --ink: #e7e2d3;
   --accent: #d98b2b;
+  --accent-rgb: 217, 139, 43;
 
   --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-body: "EB Garamond", Georgia, "Times New Roman", serif;
@@ -17,6 +18,7 @@ body {
   margin: 0;
   width: 100%;
   height: 100%;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -38,6 +40,7 @@ body {
 #app {
   width: 100%;
   height: 100%;
+  height: 100dvh;
   position: relative;
   background: var(--ground);
 }
@@ -86,7 +89,7 @@ body.preparingSlide #storyStage {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at center, rgba(217,139,43,0.16), transparent 42%),
+    radial-gradient(circle at center, rgba(var(--accent-rgb), 0.16), transparent 42%),
     linear-gradient(to bottom, rgba(0,0,0,0.18), rgba(0,0,0,0.55));
 }
 
@@ -98,11 +101,11 @@ body.preparingSlide #storyStage {
 }
 
 .storySlide.landscape .imageStage {
-  inset: 135px 54px 96px;
+  inset: clamp(80px, 16vh, 135px) clamp(24px, 6vw, 54px) clamp(60px, 12vh, 96px);
 }
 
 .storySlide.portrait .imageStage {
-  inset: 135px 54px 96px;
+  inset: clamp(80px, 16vh, 135px) clamp(24px, 6vw, 54px) clamp(60px, 12vh, 96px);
 }
 
 .storySlide.portrait .imageStage img {
@@ -194,7 +197,7 @@ body.preparingSlide #storyStage {
   width: 3px;
   background: var(--accent);
   transform: translateX(-50%);
-  box-shadow: 0 0 18px rgba(217,139,43,0.55);
+  box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.55);
   pointer-events: none;
 }
 
@@ -207,8 +210,9 @@ body.preparingSlide #storyStage {
   height: 54px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 1px solid rgba(217,139,43,0.85);
+  border: 1px solid rgba(var(--accent-rgb), 0.85);
   background: rgba(22,28,22,0.48);
+  -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   box-shadow: 0 16px 38px rgba(0,0,0,0.36);
   pointer-events: none;
@@ -221,8 +225,8 @@ body.preparingSlide #storyStage {
   top: 50%;
   width: 9px;
   height: 9px;
-  border-top: 1px solid rgba(217,139,43,0.9);
-  border-left: 1px solid rgba(217,139,43,0.9);
+  border-top: 1px solid rgba(var(--accent-rgb), 0.9);
+  border-left: 1px solid rgba(var(--accent-rgb), 0.9);
 }
 
 .comparisonHandle::before {
@@ -303,7 +307,7 @@ body.preparingSlide #storyStage {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at center, rgba(217,139,43,0.2), transparent 42%),
+    radial-gradient(circle at center, rgba(var(--accent-rgb), 0.2), transparent 42%),
     rgba(22,28,22,0.46);
 }
 
@@ -344,6 +348,7 @@ body.preparingSlide #storyStage {
   align-items: center;
   justify-content: center;
   background: rgba(22,28,22,0.88);
+  -webkit-backdrop-filter: blur(22px);
   backdrop-filter: blur(22px);
   overflow: hidden;
   opacity: 0;
@@ -469,7 +474,7 @@ body.preparingSlide #storyStage {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at center, rgba(217,139,43,0.2), transparent 42%),
+    radial-gradient(circle at center, rgba(var(--accent-rgb), 0.2), transparent 42%),
     rgba(22,28,22,0.38);
 }
 
@@ -637,6 +642,7 @@ body.preparingSlide #storyStage {
   background: rgba(22,28,22,0.88);
   border: 1px solid rgba(231,226,211,0.22);
   border-radius: 8px;
+  -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   opacity: 0;
   transform: translateY(-4px);
@@ -659,18 +665,121 @@ body.introPlaying #homeButton,
 body.rotatingCue #homeButton,
 body.bookOpening #homeButton,
 body.onboardingOpen #homeButton,
+body.toursOpen #homeButton,
 body.directoryOpen #slideTrayButton,
 body.introPlaying #slideTrayButton,
 body.rotatingCue #slideTrayButton,
 body.bookOpening #slideTrayButton,
 body.onboardingOpen #slideTrayButton,
+body.toursOpen #slideTrayButton,
 body.directoryOpen #rotateIndicator,
 body.introPlaying #rotateIndicator,
 body.rotatingCue #rotateIndicator,
 body.bookOpening #rotateIndicator,
-body.onboardingOpen #rotateIndicator {
+body.onboardingOpen #rotateIndicator,
+body.toursOpen #rotateIndicator {
   opacity: 0;
   pointer-events: none;
+}
+
+#tourEditBar {
+  position: fixed;
+  top: 18px;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 195;
+  display: none;
+}
+
+body.tourEditing #tourEditBar {
+  display: block;
+}
+
+#tourEditBarRow {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(560px, 92vw);
+  max-width: 92vw;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(22,28,22,0.94);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1.5px solid var(--accent);
+  box-shadow: 0 12px 34px rgba(0,0,0,0.4);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+#tourEditBarRow::-webkit-scrollbar {
+  display: none;
+}
+
+#tourEditBadge {
+  flex: 0 0 auto;
+  background: var(--accent);
+  color: var(--ground);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+#tourEditLabel {
+  flex: 1 1 auto;
+  min-width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+#tourEditReset,
+#tourEditSave,
+#tourEditDone {
+  flex: 0 0 auto;
+  border: 1px solid rgba(231,226,211,0.3);
+  background: rgba(255,255,255,0.06);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 7px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#tourEditSave {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.14);
+  transition: background 200ms ease, color 200ms ease;
+}
+
+#tourEditSave.justSaved {
+  background: var(--accent);
+  color: var(--ground);
+}
+
+body.storyActive:not(.portraitMode) #tourEditBar {
+  top: 18px;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* DOTS */
@@ -709,10 +818,11 @@ body.onboardingOpen #rotateIndicator {
   z-index: 160;
   display: none;
   background:
-    radial-gradient(circle at 50% 22%, rgba(217,139,43,0.12), transparent 34%),
+    radial-gradient(circle at 50% 22%, rgba(var(--accent-rgb), 0.12), transparent 34%),
     linear-gradient(180deg, var(--ground-light) 0%, var(--ground-mid) 48%, var(--ground) 100%);
   opacity: 0;
-  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 #directoryScreen.visible {
@@ -725,7 +835,7 @@ body.onboardingOpen #rotateIndicator {
   inset: 0;
   background:
     linear-gradient(to bottom, rgba(255,255,255,0.035), transparent 22%),
-    radial-gradient(circle at 50% 88%, rgba(217,139,43,0.09), transparent 46%);
+    radial-gradient(circle at 50% 88%, rgba(var(--accent-rgb), 0.09), transparent 46%);
 }
 
 #directoryHeader {
@@ -753,53 +863,46 @@ body.onboardingOpen #rotateIndicator {
   opacity: 0.72;
 }
 
-#onboardingReplay {
-  display: block;
-  margin: 14px auto 0;
-  border: none;
-  background: transparent;
-  color: rgba(231,226,211,0.6);
+#directoryUtilityRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  margin-top: 22px;
+}
+
+#onboardingReplay,
+#toursButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: 1px solid rgba(231,226,211,0.32);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  color: rgba(231,226,211,0.78);
   font-family: var(--font-body);
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  font-size: 12px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  padding: 10px 20px;
   cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
-#onboardingReplay:hover {
-  color: rgba(231,226,211,0.9);
-}
-
-#designerToggle {
-  display: block;
-  margin: 10px auto 0;
-  border: none;
-  background: transparent;
-  color: rgba(231,226,211,0.6);
-  font-family: var(--font-body);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-#designerToggle:hover,
-#designerToggle.active {
+#onboardingReplay:hover,
+#toursButton:hover {
+  border-color: var(--accent);
   color: var(--accent);
 }
 
 #bookGrid {
   position: relative;
   z-index: 162;
-  width: min(1120px, 88vw);
-  margin: 62px auto 0;
+  width: min(1120px, 92vw);
+  margin: 62px auto 48px;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: clamp(14px, 3vw, 30px);
 }
 
 .bookCard {
@@ -854,6 +957,7 @@ body.onboardingOpen #rotateIndicator {
   z-index: 180;
   padding: 16px 18px;
   background: rgba(22,28,22,0.88);
+  -webkit-backdrop-filter: blur(24px);
   backdrop-filter: blur(24px);
   border: 1px solid rgba(231,226,211,0.24);
   box-shadow: 0 30px 90px rgba(0,0,0,0.5);
@@ -872,99 +976,6 @@ body.onboardingOpen #rotateIndicator {
   letter-spacing: 0.18em;
   font-size: 10px;
   opacity: 0.7;
-}
-
-#designerPanel {
-  display: none;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(231,226,211,0.18);
-}
-
-#designerPanel.visible {
-  display: flex;
-}
-
-#designerPresets {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-#designerPresets::-webkit-scrollbar {
-  display: none;
-}
-
-.designerPresetChip {
-  flex: 0 0 auto;
-  border: 1px solid rgba(231,226,211,0.3);
-  background: rgba(255,255,255,0.05);
-  color: rgba(231,226,211,0.85);
-  font-family: var(--font-body);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  padding: 6px 12px;
-  border-radius: 999px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.designerPresetChip.active {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(217,139,43,0.12);
-}
-
-#designerActions {
-  display: flex;
-  gap: 8px;
-}
-
-#designerPresetName {
-  flex: 1 1 auto;
-  min-width: 0;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(231,226,211,0.24);
-  border-radius: 6px;
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 12px;
-  padding: 7px 10px;
-}
-
-#designerPresetName::placeholder {
-  color: rgba(231,226,211,0.4);
-}
-
-#designerSaveNew,
-#designerSaveOver {
-  flex: 0 0 auto;
-  border: 1px solid rgba(231,226,211,0.3);
-  background: rgba(255,255,255,0.05);
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  padding: 7px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-#designerSaveOver:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-body.designerMode #routeDrawer {
-  height: 250px;
-}
-
-body.designerMode #dropIndicator {
-  top: 138px;
 }
 
 #routeDrawerGrid {
@@ -1032,6 +1043,113 @@ body.designerMode #dropIndicator {
   background: rgba(22,28,22,0.68);
 }
 
+.jumpThumb.hidden img {
+  opacity: 0.32;
+}
+
+.hideToggle {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 4;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(22,28,22,0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.eyeIcon {
+  position: relative;
+  width: 15px;
+  height: 9px;
+}
+
+.eyeIcon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--ink);
+  border-radius: 50% / 100%;
+}
+
+.eyeIcon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: var(--ink);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.jumpThumb.hidden .hideToggle {
+  background: rgba(var(--accent-rgb), 0.85);
+}
+
+.jumpThumb.hidden .hideToggle::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  top: 50%;
+  height: 1.5px;
+  background: var(--ground);
+  transform: rotate(-40deg);
+}
+
+.deleteToggle {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 4;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(22,28,22,0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.deleteToggle:hover {
+  background: rgba(140,30,30,0.85);
+}
+
+.jumpThumbAdd {
+  flex: 0 0 132px;
+  height: 96px;
+  border: 1.5px dashed rgba(231,226,211,0.4);
+  background: transparent;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(231,226,211,0.6);
+}
+
+.jumpThumbAdd:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.jumpThumbAddIcon {
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 1;
+}
+
 /* CHAPTER CLOSE */
 
 #chapterClose {
@@ -1039,7 +1157,7 @@ body.designerMode #dropIndicator {
   inset: 0;
   z-index: 115;
   background:
-    radial-gradient(circle at center, rgba(217,139,43,0.18), transparent 42%),
+    radial-gradient(circle at center, rgba(var(--accent-rgb), 0.18), transparent 42%),
     rgba(22,28,22,0.84);
   display: none;
   align-items: center;
@@ -1223,7 +1341,7 @@ body.designerMode #dropIndicator {
   opacity: 0.86;
   box-shadow:
     0 18px 44px rgba(0,0,0,0.58),
-    0 0 0 2px rgba(217,139,43,0.85);
+    0 0 0 2px rgba(var(--accent-rgb), 0.85);
 }
 
 body.sortingSlides {
@@ -1248,8 +1366,8 @@ body.sortingSlides {
   height: 76px;
   background: var(--accent);
   box-shadow:
-    0 0 10px rgba(217,139,43,0.95),
-    0 0 24px rgba(217,139,43,0.45);
+    0 0 10px rgba(var(--accent-rgb), 0.95),
+    0 0 24px rgba(var(--accent-rgb), 0.45);
   opacity: 0;
   transform: translateX(0);
   transition:
@@ -1293,12 +1411,13 @@ body.storyActive:not(.portraitMode) #app {
 }
 
 body.storyActive:not(.portraitMode) .storySlide.landscape .imageStage {
-  inset: 135px 54px 96px;
+  inset: clamp(80px, 16vh, 135px) clamp(24px, 6vw, 54px) clamp(60px, 12vh, 96px);
 }
 
 body.storyActive:not(.portraitMode) .storySlide.landscape .imageStage img {
   max-width: 94vw;
-  max-height: 78vh;
+  max-height: calc(100vh - clamp(80px, 16vh, 135px) - clamp(60px, 12vh, 96px));
+  max-height: calc(100dvh - clamp(80px, 16vh, 135px) - clamp(60px, 12vh, 96px));
   transform: rotate(0deg);
 }
 
@@ -1336,6 +1455,69 @@ body.storyActive:not(.portraitMode) #routeDrawer {
 
 body.storyActive:not(.portraitMode) #routeDrawer.visible {
   transform: translateX(-50%) translateY(0);
+}
+
+/* TOUR EDITING — hide story chrome entirely; the tray + edit bar become the whole screen */
+
+body.tourEditing #storyStage,
+body.tourEditing #homeButton,
+body.tourEditing #slideTrayButton,
+body.tourEditing #dots,
+body.tourEditing #rotateIndicator {
+  display: none;
+}
+
+body.tourEditing #app {
+  background: radial-gradient(circle at 50% 38%, var(--ground-light), var(--ground) 72%);
+}
+
+body.tourEditing #routeDrawer {
+  position: fixed;
+  left: 50%;
+  top: clamp(70px, 12vh, 92px);
+  bottom: 28px;
+  width: min(880px, 92vw);
+  height: auto;
+  max-height: none;
+  padding: 20px 24px;
+  transition: none;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.55);
+  display: flex;
+  flex-direction: column;
+}
+
+body.tourEditing #routeDrawerHeader p {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  margin-bottom: 16px;
+}
+
+body.tourEditing #routeDrawerGrid {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+  max-height: 320px;
+  gap: 16px;
+}
+
+body.tourEditing .jumpThumb {
+  flex: 0 0 clamp(160px, 22vw, 230px);
+  height: 100%;
+}
+
+body.tourEditing .jumpThumbAdd {
+  flex: 0 0 clamp(160px, 22vw, 230px);
+  height: 100%;
+}
+
+body.tourEditing #customTrayScrollbar {
+  position: relative;
+  flex: 0 0 auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  width: auto;
+  margin: 14px 18px 0;
 }
 
 #routeDrawer,
@@ -1376,9 +1558,11 @@ button {
   inset: 0;
   z-index: 220;
   display: none;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   opacity: 0;
   background: linear-gradient(180deg, var(--ground-light) 0%, var(--ground-mid) 48%, var(--ground) 100%);
 }
@@ -1391,7 +1575,7 @@ button {
 #onboardingBackdrop {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 20%, rgba(217,139,43,0.14), transparent 40%);
+  background: radial-gradient(circle at 50% 20%, rgba(var(--accent-rgb), 0.14), transparent 40%);
 }
 
 .onboardingHaze {
@@ -1399,7 +1583,7 @@ button {
   inset: 0;
   background:
     linear-gradient(to bottom, rgba(255,255,255,0.03), transparent 22%),
-    radial-gradient(circle at 50% 90%, rgba(217,139,43,0.08), transparent 46%);
+    radial-gradient(circle at 50% 90%, rgba(var(--accent-rgb), 0.08), transparent 46%);
 }
 
 #onboardingSkip {
@@ -1431,7 +1615,7 @@ button {
 }
 
 #onboardingEyebrow {
-  margin: 0 0 14px;
+  margin: 0 0 clamp(6px, 2vh, 14px);
   font-family: var(--font-body);
   text-transform: uppercase;
   letter-spacing: 0.22em;
@@ -1442,7 +1626,7 @@ button {
 #onboardingTitle {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 34px;
+  font-size: clamp(20px, 5vh, 34px);
   font-weight: 500;
   letter-spacing: 0.01em;
 }
@@ -1450,16 +1634,16 @@ button {
 #onboardingBody {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: clamp(13px, 3.2vh, 16px);
+  line-height: 1.5;
   color: rgba(231,226,211,0.82);
-  min-height: 48px;
+  min-height: clamp(24px, 6vh, 48px);
 }
 
 #onboardingVisual {
   position: relative;
-  height: 120px;
-  margin: 30px 0 10px;
+  height: clamp(70px, 14vh, 120px);
+  margin: clamp(12px, 3.5vh, 30px) 0 clamp(6px, 1.5vh, 10px);
 }
 
 .onboardingVisualStep {
@@ -1516,8 +1700,8 @@ button {
 
 .onboardingRotateIcon {
   position: relative;
-  width: 90px;
-  height: 60px;
+  width: clamp(48px, 10vh, 90px);
+  height: clamp(32px, 6.6vh, 60px);
   border: 2px solid rgba(255,255,255,0.78);
   border-radius: 13px;
   box-shadow:
@@ -1591,12 +1775,12 @@ button {
   100% { transform: translateX(0); box-shadow: none; }
 }
 
-.designerDemo {
+.tourSwitchDemo {
   display: flex;
   gap: 10px;
 }
 
-.designerDemoChip {
+.tourSwitchChip {
   border: 1px solid rgba(231,226,211,0.3);
   background: rgba(255,255,255,0.05);
   color: rgba(231,226,211,0.85);
@@ -1604,14 +1788,14 @@ button {
   font-size: 12px;
   padding: 8px 16px;
   border-radius: 999px;
-  animation: designerChipPulse 2400ms ease-in-out infinite;
+  animation: tourSwitchPulse 2400ms ease-in-out infinite;
 }
 
-.designerDemoChip:nth-child(2) {
+.tourSwitchChip:nth-child(2) {
   animation-delay: 1200ms;
 }
 
-@keyframes designerChipPulse {
+@keyframes tourSwitchPulse {
   0%, 40% {
     border-color: rgba(231,226,211,0.3);
     color: rgba(231,226,211,0.85);
@@ -1620,7 +1804,7 @@ button {
   50%, 90% {
     border-color: var(--accent);
     color: var(--accent);
-    background: rgba(217,139,43,0.12);
+    background: rgba(var(--accent-rgb), 0.12);
   }
   100% {
     border-color: rgba(231,226,211,0.3);
@@ -1672,7 +1856,7 @@ button {
   display: flex;
   gap: 10px;
   justify-content: center;
-  margin-top: 26px;
+  margin-top: clamp(10px, 3vh, 26px);
 }
 
 .onboardingDot {
@@ -1691,13 +1875,11 @@ button {
 }
 
 #onboardingNav {
-  position: absolute;
-  bottom: 34px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   z-index: 222;
   display: flex;
   gap: 22px;
+  margin: clamp(14px, 3.5vh, 30px) 0 clamp(10px, 3vh, 24px);
 }
 
 #onboardingBack,
@@ -1718,9 +1900,610 @@ button {
 #onboardingBack:hover,
 #onboardingNext:hover {
   background: rgba(255,255,255,0.1);
-  border-color: rgba(217,139,43,0.5);
+  border-color: rgba(var(--accent-rgb), 0.5);
 }
 
 #onboardingBack.hidden {
   visibility: hidden;
+}
+
+/* TOURS SCREEN */
+
+#toursScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 230;
+  display: none;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(var(--accent-rgb), 0.1), transparent 34%),
+    linear-gradient(180deg, var(--ground-light) 0%, var(--ground-mid) 48%, var(--ground) 100%);
+  overflow: hidden;
+}
+
+#toursScreen.visible {
+  display: block;
+  animation: directoryIn 400ms ease forwards;
+}
+
+#toursHeader {
+  position: relative;
+  z-index: 232;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 24px 0;
+}
+
+#toursBack {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font-size: 24px;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+#toursBack.visible {
+  visibility: visible;
+}
+
+#toursTitle {
+  flex: 1 1 auto;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+#toursClose {
+  border: none;
+  background: transparent;
+  color: rgba(231,226,211,0.7);
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#toursClose:hover {
+  color: var(--accent);
+}
+
+#toursListView,
+#toursDetailView {
+  position: relative;
+  z-index: 232;
+  display: none;
+  flex-direction: column;
+  width: min(560px, 90vw);
+  margin: 24px auto 0;
+  max-height: calc(100vh - 120px);
+  max-height: calc(100dvh - 120px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 40px;
+}
+
+#toursListView.visible,
+#toursDetailView.visible {
+  display: flex;
+}
+
+.inlineHint {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(var(--accent-rgb), 0.1);
+  border: 1px solid rgba(var(--accent-rgb), 0.32);
+}
+
+.inlineHint p {
+  flex: 1 1 auto;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.inlineHintDismiss {
+  flex: 0 0 auto;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 7px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#toursList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.toursEmpty {
+  color: rgba(231,226,211,0.6);
+  font-family: var(--font-body);
+  font-size: 14px;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.tourRow {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  border: 1px solid rgba(231,226,211,0.2);
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  padding: 14px 16px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.tourRow.current {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.08);
+}
+
+.tourRowName {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.tourRowMeta {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: rgba(231,226,211,0.65);
+}
+
+.tourRowBadge {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+#newTourButton,
+#newDeckButton {
+  align-self: center;
+  border: 1px solid rgba(231,226,211,0.3);
+  background: rgba(255,255,255,0.05);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+#newTourRow,
+#renameTourRow,
+#duplicateTourRow,
+#newDeckRow {
+  display: none;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+#newDeckRow,
+#newDeckButton {
+  margin-top: 16px;
+}
+
+#newTourRow.visible,
+#renameTourRow.visible,
+#duplicateTourRow.visible,
+#newDeckRow.visible {
+  display: flex;
+}
+
+#newTourName,
+#renameTourName,
+#duplicateTourName,
+#newDeckName {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(231,226,211,0.24);
+  border-radius: 6px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  padding: 9px 12px;
+}
+
+#newTourName::placeholder,
+#renameTourName::placeholder,
+#duplicateTourName::placeholder,
+#newDeckName::placeholder {
+  color: rgba(231,226,211,0.4);
+}
+
+#newTourCreate,
+#newTourCancel,
+#renameTourSave,
+#renameTourCancel,
+#duplicateTourCreate,
+#duplicateTourCancel,
+#newDeckCreate,
+#newDeckCancel {
+  flex: 0 0 auto;
+  border: 1px solid rgba(231,226,211,0.3);
+  background: rgba(255,255,255,0.05);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#toursDetailActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+#tourMakeCurrent,
+#tourRename,
+#tourDuplicate,
+#tourDelete {
+  border: 1px solid rgba(231,226,211,0.3);
+  background: rgba(255,255,255,0.05);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+#tourMakeCurrent:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+#tourDelete {
+  border-color: rgba(200,80,60,0.4);
+  color: rgba(220,140,120,0.9);
+}
+
+#tourDeckList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tourDeckRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tourDeckOpen {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  border: 1px solid rgba(231,226,211,0.2);
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.tourDeckOpen img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 4px;
+  filter: sepia(20%) contrast(95%) brightness(0.86);
+}
+
+.tourDeckNoCover {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+  border: 1px dashed rgba(231,226,211,0.3);
+  background: rgba(255,255,255,0.03);
+}
+
+.tourDeckRowTitle {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tourDeckRowStatus {
+  flex: 0 0 auto;
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: rgba(231,226,211,0.55);
+}
+
+.tourDeckReset,
+.tourDeckDelete {
+  flex: 0 0 auto;
+  border: 1px solid rgba(231,226,211,0.24);
+  background: transparent;
+  color: rgba(231,226,211,0.7);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.tourDeckDelete {
+  border-color: rgba(200,80,60,0.4);
+  color: rgba(220,140,120,0.9);
+}
+
+/* RESPONSIVE — TABLET (e.g. iPad) */
+
+@media (max-width: 1024px) {
+  .bookCard {
+    height: 280px;
+  }
+
+  #directoryHeader img {
+    width: 140px;
+  }
+
+  #onboardingCard {
+    width: min(420px, 88vw);
+  }
+}
+
+/* RESPONSIVE — PHONE */
+
+@media (max-width: 600px) {
+  #directoryHeader {
+    padding-top: 30px;
+  }
+
+  #directoryHeader img {
+    width: 110px;
+    margin-bottom: 14px;
+  }
+
+  #directoryUtilityRow {
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  #onboardingReplay,
+  #toursButton {
+    font-size: 11px;
+    padding: 9px 14px;
+  }
+
+  #bookGrid {
+    margin-top: 34px;
+  }
+
+  .bookCard {
+    height: 220px;
+    padding: 10px;
+  }
+
+  .bookCard span {
+    font-size: 17px;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+
+  #onboardingCard {
+    padding: 0 12px;
+  }
+
+  #onboardingTitle {
+    font-size: 26px;
+  }
+
+  #onboardingBody {
+    font-size: 14px;
+  }
+
+  #onboardingNav {
+    bottom: 20px;
+    gap: 14px;
+  }
+
+  #onboardingBack,
+  #onboardingNext {
+    font-size: 12px;
+    padding: 10px 18px;
+  }
+
+  #toursHeader {
+    padding: 18px 16px 0;
+  }
+
+  #toursTitle {
+    font-size: 18px;
+  }
+
+  #toursListView,
+  #toursDetailView {
+    width: 94vw;
+    margin-top: 16px;
+    padding-bottom: 24px;
+  }
+
+  .tourRow {
+    padding: 12px 14px;
+  }
+
+  .tourRowName {
+    font-size: 17px;
+  }
+
+  .tourRowMeta {
+    font-size: 11px;
+  }
+
+  #toursDetailActions {
+    gap: 6px;
+  }
+
+  #tourMakeCurrent,
+  #tourRename,
+  #tourDuplicate,
+  #tourDelete {
+    font-size: 10px;
+    padding: 7px 10px;
+  }
+
+  .tourDeckOpen {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .tourDeckOpen img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .tourDeckRowTitle {
+    font-size: 13px;
+  }
+
+  .tourDeckRowStatus {
+    font-size: 10px;
+  }
+
+  #tourEditBarRow {
+    width: 94vw;
+    padding: 7px 8px;
+    gap: 6px;
+  }
+
+  #tourEditLabel {
+    font-size: 12px;
+  }
+
+  #tourEditBadge {
+    font-size: 9px;
+    padding: 3px 7px;
+  }
+
+  #tourEditReset,
+  #tourEditSave,
+  #tourEditDone {
+    font-size: 10px;
+    padding: 7px 9px;
+  }
+}
+
+/* TOUCH TARGET SIZING — any touch input, regardless of screen size */
+
+@media (pointer: coarse) {
+  .inlineHintDismiss,
+  .tourDeckReset,
+  .tourDeckDelete,
+  #tourMakeCurrent,
+  #tourRename,
+  #tourDuplicate,
+  #tourDelete,
+  #newTourCreate,
+  #newTourCancel,
+  #renameTourSave,
+  #renameTourCancel,
+  #duplicateTourCreate,
+  #duplicateTourCancel,
+  #newDeckCreate,
+  #newDeckCancel,
+  #tourEditReset,
+  #tourEditSave,
+  #tourEditDone {
+    min-height: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  #slideTrayButton,
+  #rotateIndicator {
+    width: 48px;
+    height: 44px;
+    align-items: center;
+  }
+
+  .hideToggle,
+  .deleteToggle {
+    width: 34px;
+    height: 34px;
+  }
+
+  .tourDeckOpen {
+    min-height: 48px;
+  }
+
+  #toursBack,
+  #toursClose {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  #newTourButton,
+  #newDeckButton {
+    min-height: 44px;
+  }
+
+  #onboardingBack,
+  #onboardingNext {
+    min-height: 44px;
+  }
+
+  #onboardingSkip {
+    min-height: 30px;
+    padding: 8px 4px;
+  }
 }

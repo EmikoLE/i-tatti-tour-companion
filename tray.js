@@ -27,19 +27,84 @@ export class Tray {
     this.routeDrawer.classList.toggle("visible");
   }
 
-  render(slides, currentIndex, { imageUrl, onTap, onReorder }) {
-    this.routeDrawerGrid.innerHTML = slides.map((slide, index) => `
-      <button
-        class="jumpThumb ${index === currentIndex ? "active" : ""}"
-        data-slide-index="${index}"
-        data-index="${index + 1}"
-      >
-        <img src="${imageUrl(slide)}" alt="" draggable="false">
+  render(slides, currentIndex, {
+    imageUrl,
+    onTap,
+    onReorder,
+    isHidden,
+    onToggleHidden,
+    onAddPhotos,
+    isDeletable,
+    onDeletePhoto
+  }) {
+    this.routeDrawerGrid.innerHTML = slides.map((slide, index) => {
+      const hidden = isHidden ? isHidden(slide) : false;
+      const deletable = isDeletable ? isDeletable(slide) : false;
+
+      return `
+        <button
+          class="jumpThumb ${index === currentIndex ? "active" : ""} ${hidden ? "hidden" : ""}"
+          data-slide-index="${index}"
+          data-index="${index + 1}"
+        >
+          <img src="${imageUrl(slide)}" alt="" draggable="false">
+          ${onToggleHidden ? `
+            <span class="hideToggle" data-toggle-index="${index}">
+              <span class="eyeIcon"></span>
+            </span>
+          ` : ""}
+          ${onDeletePhoto && deletable ? `
+            <span class="deleteToggle" data-delete-index="${index}">&times;</span>
+          ` : ""}
+        </button>
+      `;
+    }).join("") + (onAddPhotos ? `
+      <button class="jumpThumbAdd" type="button">
+        <span class="jumpThumbAddIcon">+</span>
       </button>
-    `).join("");
+    ` : "");
 
     this.setupTrayInteractions(currentIndex, { onTap, onReorder });
     this.trayScrollbar.attach();
+
+    if (onToggleHidden) {
+      Array.from(this.routeDrawerGrid.querySelectorAll(".hideToggle")).forEach(toggle => {
+        const stopEarly = event => event.stopPropagation();
+
+        toggle.addEventListener("mousedown", stopEarly);
+        toggle.addEventListener("touchstart", stopEarly, { passive: true });
+
+        toggle.addEventListener("click", event => {
+          event.stopPropagation();
+          onToggleHidden(Number(toggle.dataset.toggleIndex));
+        });
+      });
+    }
+
+    if (onDeletePhoto) {
+      Array.from(this.routeDrawerGrid.querySelectorAll(".deleteToggle")).forEach(toggle => {
+        const stopEarly = event => event.stopPropagation();
+
+        toggle.addEventListener("mousedown", stopEarly);
+        toggle.addEventListener("touchstart", stopEarly, { passive: true });
+
+        toggle.addEventListener("click", event => {
+          event.stopPropagation();
+          onDeletePhoto(Number(toggle.dataset.deleteIndex));
+        });
+      });
+    }
+
+    if (onAddPhotos) {
+      const addTile = this.routeDrawerGrid.querySelector(".jumpThumbAdd");
+
+      if (addTile) {
+        addTile.addEventListener("click", event => {
+          event.stopPropagation();
+          onAddPhotos();
+        });
+      }
+    }
   }
 
   setupTrayInteractions(currentIndex, { onTap, onReorder }) {
@@ -290,7 +355,6 @@ export class Tray {
         const targetIndex = Number(releasedThumb.dataset.slideIndex);
 
         if (targetIndex !== currentIndex) {
-          self.close();
           onTap(targetIndex);
         }
 

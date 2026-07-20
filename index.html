@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=19" />
+  <link rel="stylesheet" href="styles.css?v=30" />
 </head>
 
 <body>
@@ -59,6 +59,16 @@
       <span id="rotateIndicatorTip">Rotate your phone for the best view</span>
     </button>
 
+    <div id="tourEditBar">
+      <div id="tourEditBarRow">
+        <span id="tourEditBadge">Editing</span>
+        <span id="tourEditLabel"></span>
+        <button id="tourEditReset">Reset</button>
+        <button id="tourEditSave">Save</button>
+        <button id="tourEditDone">Chapters</button>
+      </div>
+    </div>
+
     <div id="dots"></div>
 
     <section id="directoryScreen" class="visible">
@@ -67,8 +77,11 @@
       <div id="directoryHeader">
         <img src="assets/ITattilogo.png" alt="I Tatti">
         <p>Tour Companion</p>
-        <button id="onboardingReplay">How it works</button>
-        <button id="designerToggle">Designer Mode</button>
+
+        <div id="directoryUtilityRow">
+          <button id="onboardingReplay">How it works</button>
+          <button id="toursButton">Tours</button>
+        </div>
       </div>
 
       <div id="bookGrid">
@@ -100,15 +113,6 @@
         <p>Slides</p>
       </div>
 
-      <div id="designerPanel">
-        <div id="designerPresets"></div>
-        <div id="designerActions">
-          <input id="designerPresetName" type="text" placeholder="Tour name" />
-          <button id="designerSaveNew">Save as new</button>
-          <button id="designerSaveOver">Save</button>
-        </div>
-      </div>
-
       <div id="routeDrawerGrid"></div>
       <div id="dropIndicator"></div>
 
@@ -119,6 +123,61 @@
 
     <section id="chapterClose">
       <img src="assets/ITattilogo.png" alt="I Tatti logo">
+    </section>
+
+    <input type="file" id="addPhotosInput" accept="image/*" multiple style="display:none">
+
+    <section id="toursScreen">
+      <div class="directoryHaze"></div>
+
+      <div id="toursHeader">
+        <button id="toursBack" aria-label="Back to tours">&#8249;</button>
+        <p id="toursTitle">Tours</p>
+        <button id="toursClose" aria-label="Close tours">Close</button>
+      </div>
+
+      <div id="toursListView">
+        <div id="toursList"></div>
+
+        <div id="newTourRow">
+          <input id="newTourName" type="text" placeholder="Tour name" />
+          <button id="newTourCreate">Create</button>
+          <button id="newTourCancel">Cancel</button>
+        </div>
+
+        <button id="newTourButton">+ New Tour</button>
+      </div>
+
+      <div id="toursDetailView">
+        <div id="toursDetailActions">
+          <button id="tourMakeCurrent">Make current</button>
+          <button id="tourRename">Rename</button>
+          <button id="tourDuplicate">Duplicate</button>
+          <button id="tourDelete">Delete</button>
+        </div>
+
+        <div id="renameTourRow">
+          <input id="renameTourName" type="text" placeholder="Tour name" />
+          <button id="renameTourSave">Save</button>
+          <button id="renameTourCancel">Cancel</button>
+        </div>
+
+        <div id="duplicateTourRow">
+          <input id="duplicateTourName" type="text" placeholder="New tour name" />
+          <button id="duplicateTourCreate">Create</button>
+          <button id="duplicateTourCancel">Cancel</button>
+        </div>
+
+        <div id="tourDeckList"></div>
+
+        <div id="newDeckRow">
+          <input id="newDeckName" type="text" placeholder="Chapter name" />
+          <button id="newDeckCreate">Create</button>
+          <button id="newDeckCancel">Cancel</button>
+        </div>
+
+        <button id="newDeckButton">+ New Chapter</button>
+      </div>
     </section>
 
     <section id="onboarding">
@@ -162,9 +221,9 @@
           </div>
 
           <div class="onboardingVisualStep" data-step="5">
-            <div class="designerDemo">
-              <span class="designerDemoChip">Short Tour</span>
-              <span class="designerDemoChip">Long Tour</span>
+            <div class="tourSwitchDemo">
+              <span class="tourSwitchChip">Short Tour</span>
+              <span class="tourSwitchChip">Long Tour</span>
             </div>
           </div>
 
@@ -195,6 +254,6 @@
 
   </main>
 
-  <script type="module" src="main.js?v=6"></script>
+  <script type="module" src="main.js?v=16"></script>
 </body>
 </html>

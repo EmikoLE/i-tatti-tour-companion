@@ -1,6 +1,13 @@
-import { Story } from "./story.js?v=3";
-import { Directory } from "./directory.js?v=1";
-import { Onboarding } from "./onboarding.js?v=3";
+import { Story } from "./story.js?v=9";
+import { Directory } from "./directory.js?v=3";
+import { Onboarding } from "./onboarding.js?v=4";
+import { ToursScreen } from "./toursScreen.js?v=4";
+import { TourEditBar } from "./tourEditBar.js?v=5";
+import { showHintOnce } from "./hints.js?v=1";
+import { initCustomContent } from "./customDecks.js?v=2";
+import { preloadAllImages } from "./imageStore.js?v=1";
+
+initCustomContent();
 
 const CHAPTER_CLOSE_DURATION_MS = 1300;
 const HOLD_TO_OPEN_DELAY_MS = 650;
@@ -9,6 +16,7 @@ const homeButton = document.getElementById("homeButton");
 const slideTrayButton = document.getElementById("slideTrayButton");
 const chapterClose = document.getElementById("chapterClose");
 const onboardingReplay = document.getElementById("onboardingReplay");
+const toursButton = document.getElementById("toursButton");
 
 let holdTimer = null;
 let touchStartX = 0;
@@ -16,8 +24,51 @@ let touchStartY = 0;
 let chapterTimer = null;
 
 const directory = new Directory();
-const story = new Story({ onChapterEnd: () => closeChapter() });
+const story = new Story({
+  onChapterEnd: () => closeChapter(),
+  onContentChanged: () => directory.refreshCustomDecks()
+});
 const onboarding = new Onboarding({ onFinish: () => openDirectory() });
+const addPhotosInput = document.getElementById("addPhotosInput");
+
+const tourEditBar = new TourEditBar({
+  onSave: () => {
+    story.saveCurrentDeckOrder();
+    tourEditBar.refresh();
+  },
+  onReset: () => {
+    story.resetCurrentDeckOrder();
+    tourEditBar.refresh();
+  },
+  onDone: () => {
+    const tourId = story.editingTourId;
+
+    story.exitTourEditing();
+    tourEditBar.hide();
+    story.cleanupForDirectory();
+    directory.open();
+
+    toursScreen.open();
+    if (tourId) toursScreen.showDetail(tourId);
+  }
+});
+
+const toursScreen = new ToursScreen({
+  onEditDeck: (tourId, deckId) => {
+    toursScreen.close();
+    story.enterTourEditing(tourId, deckId);
+    tourEditBar.show(tourId, deckId);
+    story.launchDeckForEditing(deckId);
+    directory.refreshCustomDecks();
+
+    showHintOnce(
+      "tourEditing",
+      document.getElementById("routeDrawer"),
+      "Drag any slide to reorder it. Save keeps the change, Reset restores the default order, and Chapters takes you back to see the other decks in this tour."
+    );
+  },
+  onDeckDeleted: () => directory.refreshCustomDecks()
+});
 
 function openDirectory() {
   clearTimeout(chapterTimer);
@@ -43,6 +94,11 @@ function closeDirectory() {
 }
 
 function closeChapter() {
+  if (story.editingTourId) {
+    story.exitTourEditing();
+    tourEditBar.hide();
+  }
+
   chapterClose.classList.add("visible");
 
   chapterTimer = setTimeout(() => {
@@ -55,6 +111,12 @@ homeButton.addEventListener("click", event => {
   event.stopPropagation();
 
   story.tray.close();
+
+  if (story.editingTourId) {
+    story.exitTourEditing();
+    tourEditBar.hide();
+  }
+
   openDirectory();
 });
 
@@ -66,9 +128,15 @@ slideTrayButton.addEventListener("click", event => {
   story.tray.toggle();
 });
 
+toursButton.addEventListener("click", event => {
+  event.stopPropagation();
+  toursScreen.open();
+});
+
 document.addEventListener("click", event => {
   if (
     story.tray.isOpen &&
+    !story.editingTourId &&
     !event.target.closest("#routeDrawer") &&
     !event.target.closest("#slideTrayButton")
   ) {
@@ -86,12 +154,15 @@ document.addEventListener("click", event => {
     story.comparisonSliders.isDragging ||
     directory.isOpen ||
     story.tray.isOpen ||
+    toursScreen.isOpen ||
     event.target.closest(".dot") ||
     event.target.closest("#homeButton") ||
     event.target.closest("#slideTrayButton") ||
     event.target.closest("#rotateIndicator") ||
+    event.target.closest("#tourEditBar") ||
     event.target.closest(".comparisonStage") ||
-    event.target.closest("#onboarding")
+    event.target.closest("#onboarding") ||
+    event.target.closest("#toursScreen")
   ) {
     return;
   }
@@ -108,11 +179,13 @@ document.addEventListener("mousedown", event => {
     event.target.closest("#homeButton") ||
     event.target.closest("#slideTrayButton") ||
     event.target.closest("#rotateIndicator") ||
+    event.target.closest("#tourEditBar") ||
     event.target.closest("#directoryScreen") ||
     event.target.closest("#routeDrawer") ||
     event.target.closest(".dot") ||
     event.target.closest(".comparisonStage") ||
-    event.target.closest("#onboarding")
+    event.target.closest("#onboarding") ||
+    event.target.closest("#toursScreen")
   ) {
     return;
   }
@@ -135,11 +208,13 @@ document.addEventListener("touchstart", event => {
     event.target.closest("#homeButton") ||
     event.target.closest("#slideTrayButton") ||
     event.target.closest("#rotateIndicator") ||
+    event.target.closest("#tourEditBar") ||
     event.target.closest("#directoryScreen") ||
     event.target.closest("#routeDrawer") ||
     event.target.closest(".dot") ||
     event.target.closest(".comparisonStage") ||
-    event.target.closest("#onboarding")
+    event.target.closest("#onboarding") ||
+    event.target.closest("#toursScreen")
   ) {
     return;
   }
@@ -157,7 +232,8 @@ document.addEventListener("touchend", event => {
     story.isTransitioning ||
     story.comparisonSliders.isDragging ||
     directory.isOpen ||
-    story.tray.isOpen
+    story.tray.isOpen ||
+    toursScreen.isOpen
   ) {
     return;
   }
@@ -187,8 +263,18 @@ document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
     if (onboarding.isOpen) {
       onboarding.close();
+    } else if (toursScreen.isOpen) {
+      if (toursScreen.view === "detail") {
+        toursScreen.showList();
+      } else {
+        toursScreen.close();
+      }
     } else if (story.tray.isOpen) {
       story.tray.close();
+    } else if (story.editingTourId) {
+      story.exitTourEditing();
+      tourEditBar.hide();
+      openDirectory();
     } else {
       closeDirectory();
     }
@@ -206,10 +292,26 @@ onboardingReplay.addEventListener("click", event => {
   onboarding.open();
 });
 
-directory.setup(packId => story.launchDeck(packId));
+addPhotosInput.addEventListener("change", async event => {
+  const files = event.target.files;
 
-if (Onboarding.hasBeenSeen()) {
-  openDirectory();
-} else {
-  onboarding.open();
+  if (files && files.length) {
+    await story.addPhotosFromFiles(files);
+  }
+
+  addPhotosInput.value = "";
+});
+
+async function bootstrap() {
+  await preloadAllImages();
+
+  directory.setup(packId => story.launchDeck(packId));
+
+  if (Onboarding.hasBeenSeen()) {
+    openDirectory();
+  } else {
+    onboarding.open();
+  }
 }
+
+bootstrap();

@@ -24,12 +24,12 @@ const STEPS = [
   {
     eyebrow: "Before you save anything",
     title: "Dragging alone doesn’t stick",
-    body: "Rearranging slides changes what you see right now, but it resets the next time this chapter loads. Nothing is saved unless you're in Designer Mode and you press Save."
+    body: "Rearranging slides changes what you see right now, but it resets the next time this chapter loads. To make an arrangement permanent, save it inside a tour."
   },
   {
-    eyebrow: "Curating a tour",
-    title: "Preview freely, save on purpose",
-    body: "Turn on Designer Mode from the directory screen to see saved tours as chips. Tap one to preview it, drag to adjust, then press Save to update it or Save as new to name a fresh one. Whichever you save becomes what everyone sees — saved per browser, per chapter."
+    eyebrow: "Curating tours",
+    title: "Tours hold an order for each chapter",
+    body: "Open Tours from the directory screen to create or edit one. Inside a tour, pick a chapter, drag to rearrange, then press Save — that becomes what everyone sees. Reset removes a chapter's custom order, and whichever tour you last saved into is always the one that loads."
   },
   {
     eyebrow: "Finding your way",
