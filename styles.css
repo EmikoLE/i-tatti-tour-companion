@@ -95,12 +95,6 @@ body.preparingSlide #storyStage {
 }
 
 .storySlide.portrait .imageStage img {
-  max-width: 94vw;
-  max-height: 78vh;
-  transform: rotate(90deg);
-}
-
-.storySlide.portrait .imageStage img {
   max-width: 82vh;
   max-height: 84vw;
   transform: rotate(-90deg);
@@ -158,10 +152,6 @@ body.preparingSlide #storyStage {
 .comparisonImage {
   position: absolute;
   inset: 0;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
-  filter: sepia(10%) contrast(96%) saturate(90%);
   user-select: none;
   pointer-events: none;
 }
@@ -173,6 +163,15 @@ body.preparingSlide #storyStage {
 .comparisonImage.reveal {
   z-index: 2;
   clip-path: inset(0 calc(100% - var(--split, 75%)) 0 0);
+}
+
+.comparisonImageInner {
+  position: absolute;
+  inset: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  filter: sepia(10%) contrast(96%) saturate(90%);
 }
 
 .comparisonDivider {
@@ -795,10 +794,6 @@ body.bookOpening #slideTrayButton {
   outline: 2px solid rgba(247,244,239,0.9);
 }
 
-.jumpThumb.dragging {
-  opacity: 0.45;
-}
-
 .jumpThumb::after {
   content: attr(data-index);
   position: absolute;
@@ -984,33 +979,6 @@ body.bookOpening #slideTrayButton {
   transition:
     transform 180ms cubic-bezier(.19,.83,.25,1),
     opacity 180ms ease,
-    outline 180ms ease;
-}
-
-.jumpThumb img {
-  pointer-events: none;
-  user-select: none;
-}
-
-.jumpThumb.lifting {
-  z-index: 20;
-}
-
-.jumpThumb.dragging {
-  opacity: 0.72;
-  box-shadow:
-    0 18px 44px rgba(0,0,0,0.55),
-    0 0 0 2px rgba(247,244,239,0.78);
-}
-
-body.sortingSlides {
-  user-select: none;
-}
-
-.jumpThumb {
-  transition:
-    transform 180ms cubic-bezier(.19,.83,.25,1),
-    opacity 180ms ease,
     outline 180ms ease,
     box-shadow 180ms ease;
 }
@@ -1031,14 +999,8 @@ body.sortingSlides {
     0 0 0 2px rgba(247,244,239,0.85);
 }
 
-.jumpThumb.dropBefore {
-  transform: translateX(-10px);
-  outline: 2px solid rgba(247,244,239,0.7);
-}
-
-.jumpThumb.dropAfter {
-  transform: translateX(10px);
-  outline: 2px solid rgba(247,244,239,0.7);
+body.sortingSlides {
+  user-select: none;
 }
 
 .jumpThumb.dropBefore {
