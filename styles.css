@@ -912,19 +912,8 @@ body.storyActive:not(.portraitMode) #tourEditBar {
 }
 
 .directoryLogoMark {
-  display: inline-block;
   width: 174px;
-  aspect-ratio: 1203 / 445;
   margin-bottom: 20px;
-  -webkit-mask-image: url("assets/ITattilogo.png");
-  mask-image: url("assets/ITattilogo.png");
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  background-color: var(--accent);
   opacity: 0.92;
 }
 
@@ -1776,18 +1765,7 @@ button {
 }
 
 .onboardingLogo {
-  display: inline-block;
   width: 90px;
-  aspect-ratio: 1203 / 445;
-  -webkit-mask-image: url("assets/ITattilogo.png");
-  mask-image: url("assets/ITattilogo.png");
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  background-color: var(--accent);
   opacity: 0.92;
 }
 
@@ -1952,15 +1930,10 @@ button {
 }
 
 .menuDemoIcon.logo {
-  -webkit-mask-image: url("assets/ITattilogo.png");
-  mask-image: url("assets/ITattilogo.png");
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  background-color: var(--accent);
+  background-image: url("assets/ITattilogo-crimson.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   animation: iconPulse 2200ms ease infinite;
 }
 
