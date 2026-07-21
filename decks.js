@@ -6,8 +6,20 @@ export const decks = {
       { type: "image", image: "bernard and mary.jpg", orientation: "portrait" },
       { type: "image", image: "Bernard Berenson as a child.jpg", orientation: "portrait" },
       { type: "image", image: "Harvard Yard 1885.jpg", orientation: "landscape" },
+      {
+        type: "image",
+        image: "isabella stewart gardener.png",
+        orientation: "portrait",
+        credit: 'Isabella Stewart Gardner. Photograph, in "Six Women Preserving History," <em><a href="https://journalofantiques.com/digital-publications/joac-magazine/features/six-women-preserving-history/" target="_blank" rel="noopener">Journal of Antiques &amp; Collectibles</a></em>.'
+      },
       { type: "image", image: "harvard_yard_aerial_web.jpg", orientation: "portrait" },
       { type: "image", image: "Mary Berenson in the garden at Villa I Tatti.jpg", orientation: "portrait" },
+      {
+        type: "image",
+        image: "jhon tempol leadner.png",
+        orientation: "portrait",
+        credit: 'John Temple Leader. Photograph, in "John Temple Leader," <em><a href="https://en.wikipedia.org/wiki/John_Temple_Leader" target="_blank" rel="noopener">Wikipedia</a></em>, accessed 21 July 2026.'
+      },
       { type: "image", image: "map showing berensons travels.png", orientation: "landscape" }
     ]
   },

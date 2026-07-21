@@ -371,6 +371,7 @@ export class Story {
 
           <div class="imageStage">
             <img src="${imageUrl}" alt="">
+            ${slide.credit ? `<p class="photoCredit">${slide.credit}</p>` : ""}
           </div>
         </article>
       `;

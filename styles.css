@@ -161,6 +161,38 @@ body.preparingSlide #storyStage {
   animation: landscapeReveal 1050ms cubic-bezier(.19,.83,.25,1) forwards;
 }
 
+/* PHOTO CREDIT — an on-slide academic citation, distinct from the general Credits screen */
+
+.photoCredit {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  z-index: 3;
+  max-width: 84%;
+  margin: 0;
+  padding: 5px 11px;
+  background: rgba(0,0,0,0.45);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border-radius: 3px;
+  color: rgba(255,255,255,0.86);
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  font-style: italic;
+  line-height: 1.45;
+  text-align: center;
+  white-space: normal;
+  pointer-events: none;
+}
+
+.photoCredit a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  pointer-events: auto;
+}
+
 .embedFrameWrap {
   position: relative;
   width: 100%;
