@@ -907,8 +907,6 @@ body.storyActive:not(.portraitMode) #tourEditBar {
   text-align: center;
   padding-top: 46px;
   color: var(--ink);
-  opacity: 0;
-  animation: directoryHeaderIn 850ms ease forwards 180ms;
 }
 
 .directoryLogoMark {
@@ -1400,10 +1398,6 @@ body.storyActive:not(.portraitMode) #tourEditBar {
 }
 
 @keyframes directoryIn {
-  to { opacity: 1; }
-}
-
-@keyframes directoryHeaderIn {
   to { opacity: 1; }
 }
 
