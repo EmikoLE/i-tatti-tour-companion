@@ -49,6 +49,7 @@ export const decks = {
         orientation: "portrait",
         before: "Pinsent 7.jpg",
         after: "WhatsApp Image 2026-06-25 at 08.42.13.jpeg",
+        beforeFit: "cover",
         start: 75
       },
 

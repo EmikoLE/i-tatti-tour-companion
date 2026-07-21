@@ -348,6 +348,7 @@ export class Story {
                     class="comparisonImageInner"
                     style="
                       background-image:url('${A + slide.before}');
+                      background-size:${slide.beforeFit || "contain"};
                       transform: rotate(${slide.beforeRotate || 0}deg) scale(${slide.beforeRotate ? 1.32 : 1});
                     "
                   ></div>
