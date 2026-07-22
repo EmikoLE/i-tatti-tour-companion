@@ -139,8 +139,8 @@ body.preparingSlide #storyStage {
 }
 
 .storySlide.portrait .imageStage img {
-  max-width: calc((100vw - 130px) * 1.15);
-  max-height: calc((100vh - 40px) * 1.15);
+  width: calc((100vw - 130px) * 1.15);
+  height: calc((100vh - 40px) * 1.15);
   transform: rotate(-90deg);
   transform-origin: center center;
 }
