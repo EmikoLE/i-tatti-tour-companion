@@ -128,7 +128,14 @@ export const decks = {
     slides: [
       { type: "embed", src: "embeds/sassetta-altarpiece-flip.html", orientation: "landscape" },
       { type: "embed", src: "embeds/sassetta-reunited-scattered.html", orientation: "landscape" },
-      { type: "embed", src: "embeds/sassetta-altarpiece-to-triptych.html", orientation: "landscape" }
+      { type: "embed", src: "embeds/sassetta-altarpiece-to-triptych.html", orientation: "landscape" },
+      {
+        type: "image",
+        image: "blown up bridge.jpg",
+        orientation: "landscape",
+        credit: 'Ponte Santa Trinita, destroyed 1944. Photograph, in "When the Nazis Bombed the Bridges of Florence," <em><a href="https://www.arteleonardo.com/en/blog/464/when-the-nazis-bombed-the-bridges-of-florence" target="_blank" rel="noopener">Arte Leonardo</a></em>, accessed 22 July 2026.'
+      },
+      { type: "image", image: "master of signa annunciation.png", orientation: "portrait" }
     ]
   },
 
