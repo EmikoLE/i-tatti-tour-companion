@@ -132,7 +132,7 @@
   function fit(){
     const vw = window.innerWidth, vh = window.innerHeight;
     viewport.style.height = vh + 'px';
-    const scale = Math.min(vw/900, vh/560) * 0.94;
+    const scale = Math.min(vw/900, vh/560) * 0.98;
     canvas.style.transform = `scale(${scale})`;
   }
   window.addEventListener('resize', fit);

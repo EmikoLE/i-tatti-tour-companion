@@ -28,18 +28,18 @@
   }
 
   .row{
-    display:flex; align-items:flex-end; gap:14px;
+    display:flex; align-items:flex-end; gap:16px;
   }
 
   .ghost{
-    width:38px; height:170px;
+    width:49px; height:221px;
     opacity:0.35;
   }
   .ghost svg{ width:100%; height:100%; display:block; }
 
   .panel{
     position:relative;
-    width:110px; height:300px;
+    width:143px; height:390px;
     border-radius:55px 55px 6px 6px;
     overflow:hidden;
     background:var(--parchment);
@@ -52,10 +52,10 @@
     width:100%; height:100%; object-fit:cover; display:block;
   }
   .panel.grey img{ filter:grayscale(0.55) opacity(0.75) contrast(0.95); }
-  .panel.center{ width:130px; height:320px; }
+  .panel.center{ width:169px; height:416px; }
 
   /* flip card for the Madonna / Francis-in-Glory panel */
-  .flip-wrap{ perspective:1400px; width:130px; height:320px; }
+  .flip-wrap{ perspective:1400px; width:169px; height:416px; }
   .flip-card{
     position:relative; width:100%; height:100%;
     transform-style:preserve-3d;
@@ -77,18 +77,18 @@
   .flip-face.back{ transform:rotateY(180deg); }
 
   .flip-hint{
-    position:absolute; top:8px; right:8px; z-index:2;
-    width:24px; height:24px; border-radius:50%;
+    position:absolute; top:10px; right:10px; z-index:2;
+    width:30px; height:30px; border-radius:50%;
     background:rgba(46,58,70,0.55);
     display:flex; align-items:center; justify-content:center;
   }
-  .flip-hint svg{ width:14px; height:14px; stroke:#fff; }
+  .flip-hint svg{ width:17px; height:17px; stroke:#fff; }
 
   .tag{
-    position:absolute; left:50%; bottom:8px; transform:translateX(-50%);
+    position:absolute; left:50%; bottom:10px; transform:translateX(-50%);
     font-family:'Cormorant Garamond', serif; font-weight:600; letter-spacing:0.4px;
-    text-transform:uppercase; font-size:8px;
-    padding:2px 6px; border-radius:16px;
+    text-transform:uppercase; font-size:9.5px;
+    padding:3px 7px; border-radius:16px;
     white-space:nowrap;
   }
   .tag.gold{ background:rgba(166,129,63,0.92); color:#fff; }
@@ -99,7 +99,7 @@
   }
   .name{
     font-family:'Cormorant Garamond', serif; font-style:italic;
-    font-size:13.5px; color:var(--ink); text-align:center; max-width:118px;
+    font-size:15.5px; color:var(--ink); text-align:center; max-width:150px;
     line-height:1.25;
   }
 
